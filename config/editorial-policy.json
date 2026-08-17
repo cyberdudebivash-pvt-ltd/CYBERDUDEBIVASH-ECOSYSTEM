@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "history_lookback_days": 84,
+  "coverage_window_days": 56,
+  "objective_lookback_days": 28,
+  "max_campaigns_per_iso_week": 2,
+  "max_campaigns_rolling_window_days": 7,
+  "max_campaigns_in_rolling_window": 2,
+  "minimum_days_between_campaigns": 2,
+  "minimum_days_between_same_platform": 10,
+  "max_campaigns_per_platform_in_lookback": 3,
+  "coverage_target_per_platform": 1,
+  "max_same_objective_in_lookback": 2,
+  "all_platform_campaign_touches_every_platform": true,
+  "allow_manual_all_platform_campaign": false,
+  "manual_requests_respect_objective_cap": true,
+  "platform_priorities": {
+    "official-portal": 8,
+    "ai-security-hub": 7,
+    "sentinel-apex": 7,
+    "cti-platform": 5,
+    "intel-factory": 6,
+    "academy": 5,
+    "trustx": 6,
+    "tools-store": 6
+  },
+  "objective_priorities": {
+    "authority": 6,
+    "demand": 6,
+    "adoption": 5,
+    "launch": 4,
+    "education": 4,
+    "trust": 5
+  },
+  "platform_objectives": {
+    "official-portal": [
+      "authority",
+      "demand",
+      "adoption",
+      "trust"
+    ],
+    "ai-security-hub": [
+      "authority",
+      "demand",
+      "adoption",
+      "launch",
+      "education",
+      "trust"
+    ],
+    "sentinel-apex": [
+      "authority",
+      "demand",
+      "adoption",
+      "launch",
+      "education"
+    ],
+    "cti-platform": [
+      "authority",
+      "adoption",
+      "education"
+    ],
+    "intel-factory": [
+      "authority",
+      "adoption",
+      "education"
+    ],
+    "academy": [
+      "demand",
+      "adoption",
+      "education"
+    ],
+    "trustx": [
+      "authority",
+      "demand",
+      "adoption",
+      "education",
+      "trust"
+    ],
+    "tools-store": [
+      "demand",
+      "adoption",
+      "launch",
+      "education"
+    ]
+  }
+}

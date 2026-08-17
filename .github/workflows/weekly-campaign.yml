@@ -4,16 +4,33 @@ on:
   workflow_dispatch:
     inputs:
       platform:
-        description: Platform ID or all
+        description: Governed platform override or auto
         required: true
-        default: all
-        type: string
-      objective:
-        description: Campaign objective
-        required: true
-        default: authority
+        default: auto
         type: choice
-        options: [authority, demand, adoption, launch, education, trust]
+        options:
+          - auto
+          - official-portal
+          - ai-security-hub
+          - sentinel-apex
+          - cti-platform
+          - intel-factory
+          - academy
+          - trustx
+          - tools-store
+      objective:
+        description: Governed campaign objective override or auto
+        required: true
+        default: auto
+        type: choice
+        options:
+          - auto
+          - authority
+          - demand
+          - adoption
+          - launch
+          - education
+          - trust
   schedule:
     - cron: '30 2 * * 1'
 
@@ -36,48 +53,114 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate growth and attribution configuration
-        run: python scripts/validate_growth_config.py
+      - name: Validate publication, growth and editorial governance
+        run: |
+          python scripts/validate_claims_governance.py
+          python scripts/validate_growth_config.py
+          python scripts/validate_editorial_config.py
 
-      - name: Resolve campaign parameters
-        id: params
+      - name: Collect public campaign operations history
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          PLATFORM='${{ inputs.platform }}'
-          OBJECTIVE='${{ inputs.objective }}'
-          [ -n "$PLATFORM" ] || PLATFORM='all'
-          [ -n "$OBJECTIVE" ] || OBJECTIVE='authority'
+          set -euo pipefail
+          mkdir -p reports
+          gh issue list \
+            --state all \
+            --limit 200 \
+            --json number,title,createdAt,state \
+            > reports/campaign-history.json
+
+      - name: Build deterministic editorial portfolio plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/portfolio_planner.py \
+            --history reports/campaign-history.json \
+            --as-of "$(date -u +%F)" \
+            --requested-platform '${{ inputs.platform || 'auto' }}' \
+            --requested-objective '${{ inputs.objective || 'auto' }}' \
+            --output-json reports/editorial-plan.json
+
+      - name: Resolve portfolio decision
+        id: plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          STATUS="$(jq -r '.status' reports/editorial-plan.json)"
+          PLATFORM="$(jq -r '.platform // ""' reports/editorial-plan.json)"
+          OBJECTIVE="$(jq -r '.objective // ""' reports/editorial-plan.json)"
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
           echo "platform=$PLATFORM" >> "$GITHUB_OUTPUT"
           echo "objective=$OBJECTIVE" >> "$GITHUB_OUTPUT"
-          echo "campaign_date=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+
+          if [ "$STATUS" != "planned" ]; then
+            echo "Campaign creation intentionally skipped: $STATUS"
+            jq -r '.reasons[]? | "- " + .' reports/editorial-plan.json
+          fi
+
+      - name: Upload planning decision
+        uses: actions/upload-artifact@v4
+        with:
+          name: editorial-plan-${{ github.run_id }}
+          path: reports/editorial-plan.json
+          retention-days: 30
 
       - name: Generate governed campaign brief and tracking bundle
+        if: steps.plan.outputs.status == 'planned'
         run: |
           python scripts/generate_campaign.py \
-            --platform '${{ steps.params.outputs.platform }}' \
-            --objective '${{ steps.params.outputs.objective }}' \
-            --campaign-date '${{ steps.params.outputs.campaign_date }}' \
+            --platform '${{ steps.plan.outputs.platform }}' \
+            --objective '${{ steps.plan.outputs.objective }}' \
+            --campaign-date "$(date -u +%F)" \
             --output reports/campaign-brief.md \
             --tracking-output reports/campaign-tracking.json
 
       - name: Resolve campaign identity
+        if: steps.plan.outputs.status == 'planned'
         id: campaign
         shell: bash
         run: |
+          set -euo pipefail
           CAMPAIGN_ID="$(jq -r '.campaign_id' reports/campaign-tracking.json)"
           test -n "$CAMPAIGN_ID"
           test "$CAMPAIGN_ID" != "null"
           echo "campaign_id=$CAMPAIGN_ID" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/upload-artifact@v4
+      - name: Build analyst-review issue body
+        if: steps.plan.outputs.status == 'planned'
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "## Portfolio planning decision"
+            echo
+            echo "- **Platform:** \`${{ steps.plan.outputs.platform }}\`"
+            echo "- **Objective:** \`${{ steps.plan.outputs.objective }}\`"
+            echo "- **As of:** \`$(jq -r '.as_of' reports/editorial-plan.json)\`"
+            echo "- **ISO-week capacity:** \`$(jq -r '.capacity.used_this_iso_week' reports/editorial-plan.json)/$(jq -r '.capacity.max_per_iso_week' reports/editorial-plan.json)\` used before this campaign"
+            echo
+            echo "### Deterministic selection rationale"
+            jq -r '.reasons[] | "- " + .' reports/editorial-plan.json
+            echo
+            cat reports/campaign-brief.md
+          } > reports/campaign-issue.md
+
+      - name: Upload governed campaign artifacts
+        if: steps.plan.outputs.status == 'planned'
+        uses: actions/upload-artifact@v4
         with:
           name: global-campaign-${{ steps.campaign.outputs.campaign_id }}
           path: |
+            reports/editorial-plan.json
             reports/campaign-brief.md
             reports/campaign-tracking.json
+            reports/campaign-issue.md
           retention-days: 30
 
       - name: Ensure campaign governance labels
+        if: steps.plan.outputs.status == 'planned'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -89,6 +172,7 @@ jobs:
             --color FBCA04 --force
 
       - name: Create idempotent campaign operations issue
+        if: steps.plan.outputs.status == 'planned'
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -107,9 +191,9 @@ jobs:
             exit 0
           fi
 
-          TITLE="Global Campaign: $CAMPAIGN_ID / ${{ steps.params.outputs.objective }} / ${{ steps.params.outputs.platform }}"
+          TITLE="Global Campaign: $CAMPAIGN_ID / ${{ steps.plan.outputs.objective }} / ${{ steps.plan.outputs.platform }}"
           gh issue create \
             --title "$TITLE" \
-            --body-file reports/campaign-brief.md \
+            --body-file reports/campaign-issue.md \
             --label global-campaign \
             --label needs-analyst-review

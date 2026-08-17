@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cyberdudebivash.com/schemas/editorial-plan.schema.json",
+  "title": "CYBERDUDEBIVASH Editorial Portfolio Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "as_of",
+    "status",
+    "platform",
+    "objective",
+    "requested_platform",
+    "requested_objective",
+    "capacity",
+    "history_records",
+    "history_warnings",
+    "reasons",
+    "platform_candidates",
+    "excluded_platforms",
+    "objective_candidates",
+    "excluded_objectives"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "as_of": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "capacity-exhausted",
+        "no-eligible-platform",
+        "no-eligible-objective",
+        "blocked"
+      ]
+    },
+    "platform": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "objective": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "requested_platform": {
+      "type": "string"
+    },
+    "requested_objective": {
+      "type": "string"
+    },
+    "capacity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "iso_year",
+        "iso_week",
+        "used_this_iso_week",
+        "max_per_iso_week",
+        "used_in_rolling_window",
+        "rolling_window_days",
+        "max_in_rolling_window",
+        "last_campaign_date",
+        "days_since_last_campaign",
+        "minimum_days_between_campaigns"
+      ],
+      "properties": {
+        "iso_year": {
+          "type": "integer",
+          "minimum": 2000
+        },
+        "iso_week": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 53
+        },
+        "used_this_iso_week": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_per_iso_week": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "used_in_rolling_window": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rolling_window_days": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_in_rolling_window": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "last_campaign_date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "days_since_last_campaign": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "minimum_days_between_campaigns": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "history_records": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "history_warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "platform_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "excluded_platforms": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "objective_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "excluded_objectives": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}
