@@ -16,6 +16,7 @@
   "required_checks": [
     "canonical URL",
     "claim evidence",
+    "claims-governance decision",
     "brand spelling",
     "security review",
     "audience fit",

@@ -5,6 +5,7 @@ import datetime as dt
 import json
 from pathlib import Path
 
+from claims_governance import load_policy as load_claims_policy, validate_publication_text
 from common import ROOT, load_json
 from growth_attribution import create_campaign_bundle, validate_campaign_record
 
@@ -64,7 +65,7 @@ Use the channel-specific URL for the matching distribution channel. Do not alter
 
     audience_text = ", ".join(audiences) if audiences else "Define one primary audience before publication."
 
-    return f"""# Global Campaign Brief — {generated}
+    document = f"""# Global Campaign Brief — {generated}
 
 ## Objective
 {OBJECTIVES[objective]}
@@ -80,6 +81,9 @@ CYBERDUDEBIVASH® connects specialized security capabilities into a coherent eco
 
 ## Platform proof points to validate before publishing
 {platform_lines}
+
+## Claims governance
+Publication is deny-by-default for legal, tax, government-recognition, certification, regulatory and market-leadership claims. Use only wording whose status is `approved` in `config/claims-governance.json`. Claims marked `hold`, `private-only` or `prohibited` must not be inferred, paraphrased into publication copy or reconstructed from private identifiers.
 
 ## Flagship asset
 Publish or select one owned CYBERDUDEBIVASH® page containing the strongest evidence, product experience, report, demonstration or educational value for this campaign.
@@ -106,6 +110,7 @@ Use one CTA per asset. When a tracking bundle exists, use the governed URL assig
 
 ## Mandatory review gates
 - [ ] All product and security claims verified against current production evidence.
+- [ ] Claims governance validator passes; legal/compliance/market-leadership wording is explicitly approved.
 - [ ] No fabricated customer, certification, partnership, revenue or analyst endorsement.
 - [ ] No secrets, customer data or sensitive vulnerability details.
 - [ ] Brand names and canonical URLs verified.
@@ -125,6 +130,12 @@ Use one CTA per asset. When a tracking bundle exists, use the governed URL assig
 ## Post-campaign review
 Record aggregate results at 24 hours, 72 hours and 7 days where data is available. Use the Growth Attribution Engine to compare message, channel, audience and downstream action. Do not store personal or customer-private telemetry in this public repository.
 """
+    validate_publication_text(
+        document,
+        load_claims_policy(),
+        context="generated campaign brief",
+    )
+    return document
 
 
 def main() -> None:
