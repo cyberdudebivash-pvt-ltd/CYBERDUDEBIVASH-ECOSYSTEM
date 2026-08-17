@@ -19,11 +19,25 @@
 | TrustX | Trust, privacy, governance and compliance | https://trustx.cyberdudebivash.com/ |
 | Tools Store | Commercial security tools and professional toolkits | https://tools.cyberdudebivash.com/ |
 
+## Global Public Directory
+
+The ecosystem maintains a governed public directory for campaign generation, PR, customer discovery, media references, APIs, social channels and public repositories:
+
+- **Human-readable directory:** [`docs/PUBLIC-DIRECTORY.md`](docs/PUBLIC-DIRECTORY.md)
+- **Machine-readable directory:** [`config/public-directory.json`](config/public-directory.json)
+- **Public directory validation:** `python scripts/validate_public_directory.py`
+
+**Official contact:** `contact@cyberdudebivash.in` · `bivash@cyberdudebivash.com` · `+91 8179881447`  
+**Location:** Odisha, India · **Service scope:** Global
+
+Public campaign capability tags: **AI Security · Threat Intelligence · SOC · MSSP · Cloud Security · Zero Trust · Enterprise Cyber Defense**.
+
 ## What this repository does
 
 This repository operates as the ecosystem's **PR & Digital Marketing Agent control plane**. It provides:
 
 - a canonical, machine-readable platform registry;
+- a governed public directory for platforms, APIs, channels and public repositories;
 - brand and messaging governance;
 - automated platform-health intelligence;
 - repeatable global campaign generation;
@@ -47,10 +61,15 @@ The agent follows a strict **evidence → message → channel → measurement �
 
 **Direct social posting is intentionally not enabled by default.** Publishing to external networks requires explicit API integrations, scoped credentials, rate-limit handling, approval policy and channel-specific compliance.
 
+## Public-Claim Safety
+
+Payment identifiers, credentials, PAN data, tax/compliance identifiers, customer-private data, and unverified market-leadership claims do not belong in the public marketing registry. Legal/compliance assertions and superlatives must pass evidence review before being promoted globally.
+
 ## Quick start
 
 ```bash
 python scripts/validate_registry.py
+python scripts/validate_public_directory.py
 python scripts/health_audit.py --output reports/platform-health.md
 python scripts/generate_campaign.py --platform all --objective authority --output reports/campaign-brief.md
 python -m unittest discover -s tests -v
@@ -60,9 +79,9 @@ python -m unittest discover -s tests -v
 
 - **Platform Health:** scheduled ecosystem availability audit with a GitHub issue on degradation.
 - **Weekly Campaign Engine:** generates a campaign brief and opens a structured campaign issue.
-- **Repository Quality:** validates platform registry and campaign engine on every pull request.
+- **Repository Quality:** validates the platform registry, public directory and campaign engine on every pull request.
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), and [`docs/MEASUREMENT.md`](docs/MEASUREMENT.md).
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), [`docs/MEASUREMENT.md`](docs/MEASUREMENT.md), and [`docs/PUBLIC-DIRECTORY.md`](docs/PUBLIC-DIRECTORY.md).
 
 ## Brand authority
 
