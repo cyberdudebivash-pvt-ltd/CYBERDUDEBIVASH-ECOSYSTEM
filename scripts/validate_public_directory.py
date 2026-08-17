@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import json
 from urllib.parse import urlparse
+
+from claims_governance import find_sensitive_identifiers, load_policy as load_claims_policy
 from common import load_json
 
 
@@ -89,6 +92,17 @@ def validate() -> list[str]:
         errors.append(
             "public directory contains forbidden sensitive/internal keys: "
             + ", ".join(forbidden)
+        )
+
+    claims_policy = load_claims_policy()
+    sensitive_values = find_sensitive_identifiers(
+        json.dumps(data, ensure_ascii=False),
+        claims_policy,
+    )
+    if sensitive_values:
+        errors.append(
+            "public directory contains forbidden sensitive identifier values: "
+            + ", ".join(sensitive_values)
         )
 
     return errors
