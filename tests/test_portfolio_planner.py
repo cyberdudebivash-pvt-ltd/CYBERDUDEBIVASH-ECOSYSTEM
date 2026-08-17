@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from common import load_json
-from portfolio_planner import PlanningError, normalize_history, plan_campaign
+from portfolio_planner import PlanningError, normalize_history, build_campaign_plan
 
 
 class PortfolioPlannerTests(unittest.TestCase):
@@ -26,14 +26,14 @@ class PortfolioPlannerTests(unittest.TestCase):
         }
 
     def test_zero_history_uses_strategic_priority_then_stable_id(self):
-        plan = plan_campaign(self.ecosystem, self.policy, [], as_of=self.as_of)
+        plan = build_campaign_plan(self.ecosystem, self.policy, [], as_of=self.as_of)
         self.assertEqual("planned", plan["status"])
         self.assertEqual("official-portal", plan["platform"])
         self.assertEqual("authority", plan["objective"])
 
     def test_recent_platform_is_excluded_by_cooldown(self):
         history = [self.record(5, "official-portal")]
-        plan = plan_campaign(self.ecosystem, self.policy, history, as_of=self.as_of)
+        plan = build_campaign_plan(self.ecosystem, self.policy, history, as_of=self.as_of)
         self.assertEqual("planned", plan["status"])
         self.assertNotEqual("official-portal", plan["platform"])
         excluded = {item["platform"]: item for item in plan["excluded_platforms"]}
@@ -47,7 +47,7 @@ class PortfolioPlannerTests(unittest.TestCase):
             self.record(20, "official-portal", "adoption"),
             self.record(65, "ai-security-hub", "authority"),
         ]
-        plan = plan_campaign(self.ecosystem, self.policy, history, as_of=self.as_of)
+        plan = build_campaign_plan(self.ecosystem, self.policy, history, as_of=self.as_of)
         self.assertEqual("planned", plan["status"])
         self.assertNotEqual("official-portal", plan["platform"])
 
@@ -56,22 +56,24 @@ class PortfolioPlannerTests(unittest.TestCase):
             self.record(0, "academy", "education"),
             self.record(1, "trustx", "trust"),
         ]
-        plan = plan_campaign(self.ecosystem, self.policy, history, as_of=self.as_of)
+        plan = build_campaign_plan(self.ecosystem, self.policy, history, as_of=self.as_of)
         self.assertEqual("capacity-exhausted", plan["status"])
         self.assertIsNone(plan["platform"])
 
     def test_rolling_capacity_blocks_across_iso_week_boundary(self):
+        # Monday 2026-08-17; campaigns on previous Sunday/Saturday are in prior ISO week
+        # but still inside the 7-day rolling window.
         history = [
             self.record(1, "academy", "education"),
             self.record(2, "trustx", "trust"),
         ]
-        plan = plan_campaign(self.ecosystem, self.policy, history, as_of=self.as_of)
+        plan = build_campaign_plan(self.ecosystem, self.policy, history, as_of=self.as_of)
         self.assertEqual("capacity-exhausted", plan["status"])
         self.assertIn("rolling", plan["reasons"][0])
 
     def test_global_spacing_blocks_manual_or_automatic_run(self):
         history = [self.record(1, "academy", "education")]
-        plan = plan_campaign(self.ecosystem, self.policy, history, as_of=self.as_of)
+        plan = build_campaign_plan(self.ecosystem, self.policy, history, as_of=self.as_of)
         self.assertEqual("capacity-exhausted", plan["status"])
         self.assertIn("spacing", plan["reasons"][0])
 
@@ -81,7 +83,8 @@ class PortfolioPlannerTests(unittest.TestCase):
             self.record(12, "trustx", "authority"),
             self.record(8, "cti-platform", "demand"),
         ]
-        plan = plan_campaign(
+        # Force a platform that supports both authority and demand.
+        plan = build_campaign_plan(
             self.ecosystem,
             self.policy,
             history,
@@ -93,7 +96,7 @@ class PortfolioPlannerTests(unittest.TestCase):
 
     def test_manual_platform_request_still_respects_cooldown(self):
         history = [self.record(5, "trustx", "trust")]
-        plan = plan_campaign(
+        plan = build_campaign_plan(
             self.ecosystem,
             self.policy,
             history,
@@ -105,28 +108,18 @@ class PortfolioPlannerTests(unittest.TestCase):
         self.assertIn("cooldown", plan["reasons"][0])
 
     def test_manual_all_platform_campaign_is_disabled(self):
-        plan = plan_campaign(
-            self.ecosystem,
-            self.policy,
-            [],
-            as_of=self.as_of,
-            requested_platform="all",
-        )
+        plan = build_campaign_plan(self.ecosystem, self.policy, [], as_of=self.as_of, requested_platform="all")
         self.assertEqual("blocked", plan["status"])
 
     def test_unknown_manual_platform_fails_closed(self):
         with self.assertRaises(PlanningError):
-            plan_campaign(
-                self.ecosystem,
-                self.policy,
-                [],
-                as_of=self.as_of,
-                requested_platform="unknown-platform",
+            build_campaign_plan(
+                self.ecosystem, self.policy, [], as_of=self.as_of, requested_platform="unknown-platform"
             )
 
     def test_all_platform_history_touches_every_platform(self):
         history = [self.record(5, "all", "authority")]
-        plan = plan_campaign(self.ecosystem, self.policy, history, as_of=self.as_of)
+        plan = build_campaign_plan(self.ecosystem, self.policy, history, as_of=self.as_of)
         self.assertEqual("no-eligible-platform", plan["status"])
         normalized, warnings = normalize_history(
             history,
@@ -138,19 +131,13 @@ class PortfolioPlannerTests(unittest.TestCase):
         self.assertEqual([], warnings)
 
     def test_reserved_prefix_with_malformed_title_fails_closed(self):
-        bad = [{
-            "title": "Global Campaign: malformed",
-            "createdAt": "2026-08-10T00:00:00Z",
-        }]
+        bad = [{"title": "Global Campaign: malformed", "createdAt": "2026-08-10T00:00:00Z"}]
         with self.assertRaises(PlanningError):
-            plan_campaign(self.ecosystem, self.policy, bad, as_of=self.as_of)
+            build_campaign_plan(self.ecosystem, self.policy, bad, as_of=self.as_of)
 
     def test_unrelated_issue_history_is_ignored(self):
-        history = [{
-            "title": "P0 Governance: unrelated",
-            "createdAt": "2026-08-10T00:00:00Z",
-        }]
-        plan = plan_campaign(self.ecosystem, self.policy, history, as_of=self.as_of)
+        history = [{"title": "P0 Governance: unrelated", "createdAt": "2026-08-10T00:00:00Z"}]
+        plan = build_campaign_plan(self.ecosystem, self.policy, history, as_of=self.as_of)
         self.assertEqual("planned", plan["status"])
         self.assertEqual(0, plan["history_records"])
 
@@ -159,8 +146,8 @@ class PortfolioPlannerTests(unittest.TestCase):
             self.record(30, "official-portal", "authority"),
             self.record(18, "ai-security-hub", "demand"),
         ]
-        first = plan_campaign(self.ecosystem, self.policy, history, as_of=self.as_of)
-        second = plan_campaign(self.ecosystem, self.policy, history, as_of=self.as_of)
+        first = build_campaign_plan(self.ecosystem, self.policy, history, as_of=self.as_of)
+        second = build_campaign_plan(self.ecosystem, self.policy, history, as_of=self.as_of)
         self.assertEqual(first, second)
 
 
