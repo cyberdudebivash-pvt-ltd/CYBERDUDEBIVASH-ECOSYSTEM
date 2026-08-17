@@ -31,9 +31,14 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Validate growth and attribution configuration
+        run: python scripts/validate_growth_config.py
+
       - name: Resolve campaign parameters
         id: params
         shell: bash
@@ -44,16 +49,67 @@ jobs:
           [ -n "$OBJECTIVE" ] || OBJECTIVE='authority'
           echo "platform=$PLATFORM" >> "$GITHUB_OUTPUT"
           echo "objective=$OBJECTIVE" >> "$GITHUB_OUTPUT"
-      - name: Generate campaign brief
-        run: python scripts/generate_campaign.py --platform '${{ steps.params.outputs.platform }}' --objective '${{ steps.params.outputs.objective }}' --output reports/campaign-brief.md
+          echo "campaign_date=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Generate governed campaign brief and tracking bundle
+        run: |
+          python scripts/generate_campaign.py \
+            --platform '${{ steps.params.outputs.platform }}' \
+            --objective '${{ steps.params.outputs.objective }}' \
+            --campaign-date '${{ steps.params.outputs.campaign_date }}' \
+            --output reports/campaign-brief.md \
+            --tracking-output reports/campaign-tracking.json
+
+      - name: Resolve campaign identity
+        id: campaign
+        shell: bash
+        run: |
+          CAMPAIGN_ID="$(jq -r '.campaign_id' reports/campaign-tracking.json)"
+          test -n "$CAMPAIGN_ID"
+          test "$CAMPAIGN_ID" != "null"
+          echo "campaign_id=$CAMPAIGN_ID" >> "$GITHUB_OUTPUT"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: global-campaign-brief
-          path: reports/campaign-brief.md
+          name: global-campaign-${{ steps.campaign.outputs.campaign_id }}
+          path: |
+            reports/campaign-brief.md
+            reports/campaign-tracking.json
           retention-days: 30
-      - name: Create campaign operations issue
+
+      - name: Ensure campaign governance labels
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TITLE="Global Campaign: ${{ steps.params.outputs.objective }} / ${{ steps.params.outputs.platform }} / $(date -u +%F)"
-          gh issue create --title "$TITLE" --body-file reports/campaign-brief.md
+          gh label create global-campaign \
+            --description "Governed CYBERDUDEBIVASH global campaign" \
+            --color 0969DA --force
+          gh label create needs-analyst-review \
+            --description "Requires human evidence and publication review" \
+            --color FBCA04 --force
+
+      - name: Create idempotent campaign operations issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          CAMPAIGN_ID='${{ steps.campaign.outputs.campaign_id }}'
+          EXISTING="$(
+            gh issue list \
+              --state all \
+              --search "$CAMPAIGN_ID" \
+              --json number \
+              --jq 'length'
+          )"
+          if [ "$EXISTING" != "0" ]; then
+            echo "Campaign $CAMPAIGN_ID already has an operations issue; skipping duplicate."
+            exit 0
+          fi
+
+          TITLE="Global Campaign: $CAMPAIGN_ID / ${{ steps.params.outputs.objective }} / ${{ steps.params.outputs.platform }}"
+          gh issue create \
+            --title "$TITLE" \
+            --body-file reports/campaign-brief.md \
+            --label global-campaign \
+            --label needs-analyst-review

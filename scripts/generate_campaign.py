@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 from pathlib import Path
+
 from common import ROOT, load_json
+from growth_attribution import create_campaign_bundle, validate_campaign_record
 
 OBJECTIVES = {
     "authority": "Strengthen global technical and enterprise authority with evidence-led ecosystem positioning.",
@@ -25,12 +28,41 @@ def select_platforms(data: dict, requested: str) -> list[dict]:
     return matches
 
 
-def render(platforms: list[dict], objective: str) -> str:
+def render(
+    platforms: list[dict],
+    objective: str,
+    tracking_bundle: dict | None = None,
+) -> str:
     generated = dt.datetime.now(dt.timezone.utc).date().isoformat()
     names = ", ".join(p["name"] for p in platforms)
-    audiences = sorted({aud for p in platforms for aud in p["audiences"]})
+    audiences = sorted({aud for p in platforms for aud in p.get("audiences", [])})
     primary_url = "https://www.cyberdudebivash.com/" if len(platforms) > 1 else platforms[0]["url"]
-    platform_lines = "\n".join(f"- **{p['name']}** — {p['positioning']} — {p['url']}" for p in platforms)
+    platform_lines = "\n".join(
+        f"- **{p['name']}** — {p.get('positioning', 'Governed ecosystem platform.')} — {p['url']}"
+        for p in platforms
+    )
+
+    tracking_section = ""
+    cta_url = primary_url
+    if tracking_bundle:
+        cta_url = tracking_bundle["destination"]
+        tracking_lines = "\n".join(
+            f"- **{channel}**: {url}"
+            for channel, url in tracking_bundle["tracking_urls"].items()
+        )
+        tracking_section = f"""
+## Campaign identity and attribution
+Campaign ID: `{tracking_bundle['campaign_id']}`  
+Lifecycle state: `{tracking_bundle['state']}`  
+Canonical destination: {tracking_bundle['destination']}
+
+### Governed channel URLs
+{tracking_lines}
+
+Use the channel-specific URL for the matching distribution channel. Do not alter `utm_campaign`; it is the attribution join key. UTM parameters measure attributable traffic, not causality.
+"""
+
+    audience_text = ", ".join(audiences) if audiences else "Define one primary audience before publication."
 
     return f"""# Global Campaign Brief — {generated}
 
@@ -41,7 +73,7 @@ def render(platforms: list[dict], objective: str) -> str:
 {names}
 
 ## Primary audiences
-{', '.join(audiences)}
+{audience_text}
 
 ## Core narrative
 CYBERDUDEBIVASH® connects specialized security capabilities into a coherent ecosystem spanning AI security, threat intelligence, enterprise defense, trust/governance, practitioner tooling and education. The campaign must lead with a specific evidence-backed customer or practitioner outcome rather than generic claims.
@@ -51,7 +83,7 @@ CYBERDUDEBIVASH® connects specialized security capabilities into a coherent eco
 
 ## Flagship asset
 Publish or select one owned CYBERDUDEBIVASH® page containing the strongest evidence, product experience, report, demonstration or educational value for this campaign.
-
+{tracking_section}
 ## Distribution sequence
 1. **Owned web / blog** — canonical flagship asset and source of truth.
 2. **LinkedIn** — executive + practitioner narrative with one primary CTA.
@@ -68,9 +100,9 @@ Publish or select one owned CYBERDUDEBIVASH® page containing the strongest evid
 - FAQ/objection asset: answer the strongest buyer or practitioner question.
 
 ## CTA
-Primary destination: {primary_url}
+Canonical destination: {cta_url}
 
-Use one CTA per asset. Do not dilute conversion intent with a long list of unrelated links.
+Use one CTA per asset. When a tracking bundle exists, use the governed URL assigned to the distribution channel instead of manually composing UTM parameters.
 
 ## Mandatory review gates
 - [ ] All product and security claims verified against current production evidence.
@@ -78,18 +110,20 @@ Use one CTA per asset. Do not dilute conversion intent with a long list of unrel
 - [ ] No secrets, customer data or sensitive vulnerability details.
 - [ ] Brand names and canonical URLs verified.
 - [ ] Security-intelligence claims distinguish fact, source claim, analysis and inference.
+- [ ] Campaign ID and channel-specific tracking URL validated.
 - [ ] CTA and campaign tracking parameters validated.
 
 ## KPIs
 - qualified click-through rate;
 - engaged visits to owned CYBERDUDEBIVASH® properties;
+- CTA actions and qualified lead intent;
 - cross-platform exploration;
-- enterprise/contact/tool/course intent;
+- enterprise/contact/tool/course/API intent;
 - earned mentions, citations and saves by target audiences;
 - follow-on questions or opportunities generated.
 
 ## Post-campaign review
-Record results at 24 hours, 72 hours and 7 days. Capture what message, channel, audience and asset produced the highest-quality downstream action, then convert that learning into the next campaign issue.
+Record aggregate results at 24 hours, 72 hours and 7 days where data is available. Use the Growth Attribution Engine to compare message, channel, audience and downstream action. Do not store personal or customer-private telemetry in this public repository.
 """
 
 
@@ -98,14 +132,43 @@ def main() -> None:
     parser.add_argument("--platform", default="all")
     parser.add_argument("--objective", choices=sorted(OBJECTIVES), default="authority")
     parser.add_argument("--output", default="reports/campaign-brief.md")
+    parser.add_argument("--tracking-output", default="")
+    parser.add_argument("--campaign-date", default="")
+    parser.add_argument("--content", default="primary")
     args = parser.parse_args()
-    data = load_json("config/ecosystem.json")
-    platforms = select_platforms(data, args.platform)
+
+    ecosystem = load_json("config/ecosystem.json")
+    platforms = select_platforms(ecosystem, args.platform)
+    tracking_bundle = None
+    if args.tracking_output:
+        policy = load_json("config/growth-policy.json")
+        channels = load_json("config/channel-taxonomy.json")
+        campaign_date = args.campaign_date or dt.datetime.now(dt.timezone.utc).date().isoformat()
+        tracking_bundle = create_campaign_bundle(
+            ecosystem,
+            channels,
+            policy,
+            campaign_date=campaign_date,
+            objective=args.objective,
+            platform=args.platform,
+            content=args.content,
+        )
+        validate_campaign_record(tracking_bundle, policy, ecosystem)
+        tracking_path = Path(args.tracking_output)
+        if not tracking_path.is_absolute():
+            tracking_path = ROOT / tracking_path
+        tracking_path.parent.mkdir(parents=True, exist_ok=True)
+        tracking_path.write_text(
+            json.dumps(tracking_bundle, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        print(f"Wrote {tracking_path}")
+
     output = Path(args.output)
     if not output.is_absolute():
         output = ROOT / output
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(render(platforms, args.objective), encoding="utf-8")
+    output.write_text(render(platforms, args.objective, tracking_bundle), encoding="utf-8")
     print(f"Wrote {output}")
 
 

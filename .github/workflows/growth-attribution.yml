@@ -1,0 +1,111 @@
+name: Growth Attribution Scorecard
+
+on:
+  workflow_dispatch:
+    inputs:
+      campaign_id:
+        description: Optional campaign ID filter. Leave blank to aggregate all approved public records.
+        required: false
+        default: ''
+        type: string
+  schedule:
+    - cron: '10 4 * * 1'
+  push:
+    branches: [main]
+    paths:
+      - 'data/performance/**'
+      - 'config/growth-policy.json'
+      - 'config/channel-taxonomy.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: growth-attribution-scorecard
+  cancel-in-progress: true
+
+jobs:
+  scorecard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate growth configuration
+        run: python scripts/validate_growth_config.py
+
+      - name: Discover public-approved aggregate performance inputs
+        id: inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          if [ ! -d data/performance ]; then
+            echo "count=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          find data/performance -maxdepth 1 -type f \
+            \( -name '*.json' -o -name '*.jsonl' \) \
+            -print | sort > reports/performance-files.txt
+          COUNT="$(wc -l < reports/performance-files.txt | tr -d ' ')"
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Validate performance records
+        if: steps.inputs.outputs.count != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t FILES < reports/performance-files.txt
+          python scripts/growth_attribution.py validate-performance --input "${FILES[@]}"
+
+      - name: Build attribution scorecard
+        if: steps.inputs.outputs.count != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t FILES < reports/performance-files.txt
+          CAMPAIGN_ID='${{ inputs.campaign_id }}'
+          if [ -n "$CAMPAIGN_ID" ]; then
+            python scripts/growth_attribution.py scorecard \
+              --input "${FILES[@]}" \
+              --campaign-id "$CAMPAIGN_ID" \
+              --output-json reports/growth-scorecard.json \
+              --output-markdown reports/growth-scorecard.md
+          else
+            python scripts/growth_attribution.py scorecard \
+              --input "${FILES[@]}" \
+              --output-json reports/growth-scorecard.json \
+              --output-markdown reports/growth-scorecard.md
+          fi
+
+      - name: Build zero-state report
+        if: steps.inputs.outputs.count == '0'
+        shell: bash
+        run: |
+          cat > reports/growth-scorecard.md <<'EOF'
+          # CYBERDUDEBIVASH® Growth Attribution Scorecard
+
+          No public-approved aggregate performance records are present.
+
+          This is a safe zero state. Do not infer campaign effectiveness without attributable evidence.
+
+          Private or commercially sensitive telemetry must be processed outside this public repository unless explicitly approved for publication.
+          EOF
+
+      - name: Upload scorecard artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: growth-attribution-scorecard
+          path: |
+            reports/growth-scorecard.md
+            reports/growth-scorecard.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Publish run summary
+        if: always()
+        run: cat reports/growth-scorecard.md >> "$GITHUB_STEP_SUMMARY"
