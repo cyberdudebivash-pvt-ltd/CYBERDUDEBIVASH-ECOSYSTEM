@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "brand": "CYBERDUDEBIVASH®",
+  "canonical_home": "https://www.cyberdudebivash.com/",
+  "owner_confirmed_on": "2026-08-17",
+  "public_contact": {
+    "location": "Odisha, India",
+    "service_scope": "Global",
+    "emails": [
+      "contact@cyberdudebivash.in",
+      "bivash@cyberdudebivash.com"
+    ],
+    "phone": "+91 8179881447",
+    "whatsapp": "+91 8179881447"
+  },
+  "capabilities": [
+    "AI Security",
+    "Threat Intelligence",
+    "SOC",
+    "MSSP",
+    "Cloud Security",
+    "Zero Trust",
+    "Enterprise Cyber Defense"
+  ],
+  "platforms": [
+    {
+      "id": "official-portal",
+      "name": "CYBERDUDEBIVASH® Official Portal",
+      "url": "https://www.cyberdudebivash.com/"
+    },
+    {
+      "id": "ai-security-hub",
+      "name": "CYBERDUDEBIVASH® AI Security Hub",
+      "url": "https://cyberdudebivash.in/"
+    },
+    {
+      "id": "sentinel-apex",
+      "name": "CYBERDUDEBIVASH® Sentinel APEX",
+      "url": "https://intel.cyberdudebivash.com/"
+    },
+    {
+      "id": "cti-platform",
+      "name": "CYBERDUDEBIVASH® CTI Platform",
+      "url": "https://cti.cyberdudebivash.in/"
+    },
+    {
+      "id": "intel-factory",
+      "name": "CYBERDUDEBIVASH® Intelligence Factory",
+      "url": "https://blog.cyberdudebivash.in/"
+    },
+    {
+      "id": "tools-store",
+      "name": "CYBERDUDEBIVASH® Tools Store",
+      "url": "https://tools.cyberdudebivash.com/"
+    },
+    {
+      "id": "academy",
+      "name": "CYBERDUDEBIVASH® Sentinel APEX Academy",
+      "url": "https://academy.cyberdudebivash.com/"
+    },
+    {
+      "id": "trustx",
+      "name": "CYBERDUDEBIVASH® TrustX",
+      "url": "https://trustx.cyberdudebivash.com/"
+    }
+  ],
+  "public_endpoints": [
+    {
+      "id": "ai-security-api",
+      "platform": "ai-security-hub",
+      "kind": "api-entry",
+      "url": "https://cyberdudebivash.in/api/",
+      "source_status": "owner-confirmed"
+    },
+    {
+      "id": "sentinel-api-docs",
+      "platform": "sentinel-apex",
+      "kind": "documentation",
+      "url": "https://intel.cyberdudebivash.com/api-docs",
+      "source_status": "verified-public-page"
+    },
+    {
+      "id": "sentinel-upgrade",
+      "platform": "sentinel-apex",
+      "kind": "commercial",
+      "url": "https://intel.cyberdudebivash.com/upgrade.html",
+      "source_status": "owner-confirmed"
+    },
+    {
+      "id": "sentinel-health",
+      "platform": "sentinel-apex",
+      "kind": "health",
+      "url": "https://intel.cyberdudebivash.com/api/health",
+      "source_status": "owner-confirmed"
+    },
+    {
+      "id": "sentinel-latest",
+      "platform": "sentinel-apex",
+      "kind": "intel-feed",
+      "url": "https://intel.cyberdudebivash.com/api/v1/intel/latest.json",
+      "source_status": "owner-confirmed"
+    },
+    {
+      "id": "sentinel-apex-json",
+      "platform": "sentinel-apex",
+      "kind": "intel-feed",
+      "url": "https://intel.cyberdudebivash.com/api/v1/intel/apex.json",
+      "source_status": "owner-confirmed"
+    },
+    {
+      "id": "sentinel-ai-summary",
+      "platform": "sentinel-apex",
+      "kind": "ai-summary",
+      "url": "https://intel.cyberdudebivash.com/api/v1/intel/ai_summary.json",
+      "source_status": "owner-confirmed"
+    },
+    {
+      "id": "sentinel-feed-json",
+      "platform": "sentinel-apex",
+      "kind": "intel-feed",
+      "url": "https://intel.cyberdudebivash.com/api/feed.json",
+      "source_status": "owner-confirmed"
+    },
+    {
+      "id": "sentinel-reports-latest",
+      "platform": "sentinel-apex",
+      "kind": "reports-index",
+      "url": "https://intel.cyberdudebivash.com/api/reports/latest.json",
+      "source_status": "owner-confirmed"
+    }
+  ],
+  "channels": [
+    {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com/company/cyberdudebivash/"
+    },
+    {
+      "id": "instagram",
+      "name": "Instagram",
+      "url": "https://www.instagram.com/cyberdudebivash_official/"
+    },
+    {
+      "id": "x",
+      "name": "X",
+      "url": "https://x.com/cyberbivash"
+    },
+    {
+      "id": "facebook",
+      "name": "Facebook",
+      "url": "https://www.facebook.com/profile.php?id=61592427350011"
+    },
+    {
+      "id": "fiverr",
+      "name": "Fiverr",
+      "url": "https://www.fiverr.com/sellers/bivashkumar007/"
+    }
+  ],
+  "publications": [
+    {
+      "id": "cyberbivash-blogspot",
+      "name": "CyberBivash Blogspot",
+      "url": "https://cyberbivash.blogspot.com/"
+    },
+    {
+      "id": "cyberdudebivash-news",
+      "name": "CYBERDUDEBIVASH News",
+      "url": "https://cyberdudebivash-news.blogspot.com/"
+    },
+    {
+      "id": "cyberdudebivash-ecosystem-blog",
+      "name": "CYBERDUDEBIVASH Ecosystem Blog",
+      "url": "https://cyberdudebivash-ecosystem.blogspot.com/"
+    }
+  ],
+  "public_repositories": [
+    {
+      "id": "ecosystem-repo",
+      "name": "CYBERDUDEBIVASH-ECOSYSTEM",
+      "url": "https://github.com/cyberdudebivash-pvt-ltd/CYBERDUDEBIVASH-ECOSYSTEM"
+    },
+    {
+      "id": "sentinel-apex-repo",
+      "name": "CYBERDUDEBIVASH-THREAT-INTEL-PLATFORM",
+      "url": "https://github.com/cyberdudebivash-pvt-ltd/CYBERDUDEBIVASH-THREAT-INTEL-PLATFORM"
+    },
+    {
+      "id": "intel-factory-repo",
+      "name": "cyberdudebivash-blog",
+      "url": "https://github.com/cyberdudebivash-pvt-ltd/cyberdudebivash-blog"
+    }
+  ]
+}
