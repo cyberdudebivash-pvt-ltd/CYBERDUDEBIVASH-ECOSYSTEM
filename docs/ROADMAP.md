@@ -27,8 +27,7 @@
 
 ### Remaining
 
-- ingest additional approved product and Academy/TrustX release signals;
-- expand editorial-calendar and portfolio-balancing inputs.
+- ingest additional approved product and Academy/TrustX release signals.
 
 ## Phase 2B — Growth Intelligence & Attribution
 
@@ -74,9 +73,34 @@
 - provision an isolated private analytics runner;
 - connect approved Cloudflare Web Analytics and/or GA4 aggregate adapters;
 - connect approved Search Console/Bing/provider evidence normalization;
-- campaign portfolio balancing across ecosystem platforms;
-- editorial calendar and capacity controls;
 - executive growth dashboard using reviewed aggregate exports only.
+
+## Phase 2D — Portfolio & Editorial Orchestration
+
+### Delivered
+
+- governed editorial and portfolio policy;
+- ISO-week and rolling-window campaign capacity ceilings;
+- minimum global campaign spacing;
+- same-platform cooldown enforcement;
+- per-platform lookback caps;
+- coverage-debt prioritization across all governed ecosystem platforms;
+- deterministic platform selection with stable tie-breaking;
+- platform-specific objective allowlists;
+- objective-frequency rotation and repetition caps;
+- governed manual workflow overrides without a hidden force bypass;
+- public campaign-issue history normalization;
+- clean no-op behavior when capacity or eligibility is exhausted;
+- machine-readable editorial planning artifact;
+- scheduled weekly auto-planning before campaign generation;
+- analyst-review issue rationale with portfolio decision metadata;
+- CI validation and focused portfolio-planner tests.
+
+### Next
+
+- ingest additional editorial-capacity signals from approved product launch calendars;
+- add reviewed executive portfolio coverage reporting;
+- connect approved aggregate performance evidence to future prioritization without introducing causal claims.
 
 ## Phase 3 — Controlled Distribution
 
