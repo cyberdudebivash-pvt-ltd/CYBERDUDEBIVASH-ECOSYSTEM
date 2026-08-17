@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "minimum_evidence_score": 3,
+  "minimum_total_score": 18,
+  "max_signal_age_days": 30,
+  "max_items_per_source": 12,
+  "max_issues_per_run": 5,
+  "request_timeout_seconds": 12,
+  "max_response_bytes": 2000000,
+  "max_title_chars": 180,
+  "max_summary_chars": 1200
+}

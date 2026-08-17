@@ -1,0 +1,117 @@
+name: Campaign Intelligence Engine
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 2,14 * * *'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: campaign-intelligence-engine
+  cancel-in-progress: true
+
+jobs:
+  intelligence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate intelligence configuration
+        run: python scripts/validate_intelligence_config.py
+
+      - name: Collect and score signals
+        id: engine
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/intelligence_engine.py \
+            --output-json reports/opportunities.json \
+            --output-markdown reports/campaign-intelligence.md
+
+      - name: Upload intelligence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: campaign-intelligence
+          path: |
+            reports/opportunities.json
+            reports/campaign-intelligence.md
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Stop when all intelligence sources fail
+        if: steps.engine.outcome == 'failure'
+        run: |
+          echo "Campaign Intelligence Engine could not obtain any successful trusted source."
+          exit 1
+
+      - name: Ensure governance labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create campaign-intelligence \
+            --description "Automated evidence-backed PR/marketing opportunity" \
+            --color 0E8A16 --force
+          gh label create needs-analyst-review \
+            --description "Requires human evidence and publication review" \
+            --color FBCA04 --force
+
+      - name: Create deduplicated campaign opportunities
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reports/issue-bodies
+
+          jq -c '.opportunities[] | select(.selected_for_issue == true)' reports/opportunities.json |
+          while IFS= read -r opportunity; do
+            fingerprint="$(jq -r '.fingerprint' <<<"$opportunity")"
+            title="$(jq -r '.issue_title' <<<"$opportunity")"
+
+            recent_existing="$(
+              gh issue list \
+                --state all \
+                --limit 200 \
+                --json body \
+                --jq "[.[] | select(.body != null and (.body | contains(\"signal-id:${fingerprint}\")))] | length"
+            )"
+
+            indexed_existing="$(
+              gh issue list \
+                --state all \
+                --search "$fingerprint" \
+                --json number \
+                --jq 'length'
+            )"
+
+            if [ "$recent_existing" != "0" ] || [ "$indexed_existing" != "0" ]; then
+              echo "Skipping existing signal $fingerprint"
+              continue
+            fi
+
+            body_file="reports/issue-bodies/${fingerprint}.md"
+            jq -r '.issue_body' <<<"$opportunity" > "$body_file"
+
+            gh issue create \
+              --title "$title" \
+              --body-file "$body_file" \
+              --label campaign-intelligence \
+              --label needs-analyst-review
+          done
+
+      - name: Publish run summary
+        if: always()
+        run: |
+          if [ -f reports/campaign-intelligence.md ]; then
+            cat reports/campaign-intelligence.md >> "$GITHUB_STEP_SUMMARY"
+          fi

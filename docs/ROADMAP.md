@@ -8,11 +8,24 @@
 - launch and distribution playbooks.
 
 ## Phase 2 — Intelligence
-- ingest release notes and approved product updates;
+
+### Delivered
+- trusted first-party intelligence source registry;
+- resilient JSON and GitHub release ingestion;
+- normalized campaign-signal schema;
+- deterministic six-dimensional opportunity scoring;
+- evidence and freshness hard gates;
+- SHA-256 signal fingerprinting and issue deduplication;
+- capped analyst-review opportunity creation;
+- twice-daily Campaign Intelligence Engine workflow;
+- CI validation for intelligence policy and source governance.
+
+### Remaining
+- ingest additional approved product and Academy/TrustX release signals;
 - SEO opportunity inventory;
-- campaign scoring and editorial calendar;
+- editorial calendar and campaign portfolio balancing;
 - referral/UTM governance;
-- channel performance import.
+- channel performance import and closed-loop learning.
 
 ## Phase 3 — Controlled distribution
 - approved LinkedIn/X/YouTube/newsletter integrations;
@@ -25,4 +38,4 @@
 - content/CTA experimentation;
 - cross-platform recommendation engine;
 - executive growth scorecard;
-- PR opportunity intelligence.
+- external PR opportunity intelligence.

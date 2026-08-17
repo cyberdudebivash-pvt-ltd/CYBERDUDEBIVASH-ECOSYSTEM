@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "allowed_hosts": [
+    "intel.cyberdudebivash.com",
+    "api.github.com"
+  ],
+  "sources": [
+    {
+      "id": "sentinel-latest",
+      "type": "json",
+      "platform": "sentinel-apex",
+      "purpose": "threat-intelligence",
+      "url": "https://intel.cyberdudebivash.com/api/v1/intel/latest.json",
+      "trust_level": 4,
+      "enabled": true
+    },
+    {
+      "id": "sentinel-apex-feed",
+      "type": "json",
+      "platform": "sentinel-apex",
+      "purpose": "threat-intelligence",
+      "url": "https://intel.cyberdudebivash.com/api/v1/intel/apex.json",
+      "trust_level": 4,
+      "enabled": true
+    },
+    {
+      "id": "sentinel-ai-summary",
+      "type": "json",
+      "platform": "sentinel-apex",
+      "purpose": "ai-security-intelligence",
+      "url": "https://intel.cyberdudebivash.com/api/v1/intel/ai_summary.json",
+      "trust_level": 4,
+      "enabled": true
+    },
+    {
+      "id": "sentinel-feed",
+      "type": "json",
+      "platform": "sentinel-apex",
+      "purpose": "threat-intelligence",
+      "url": "https://intel.cyberdudebivash.com/api/feed.json",
+      "trust_level": 4,
+      "enabled": true
+    },
+    {
+      "id": "sentinel-reports",
+      "type": "json",
+      "platform": "sentinel-apex",
+      "purpose": "research",
+      "url": "https://intel.cyberdudebivash.com/api/reports/latest.json",
+      "trust_level": 4,
+      "enabled": true
+    },
+    {
+      "id": "sentinel-github-releases",
+      "type": "github-releases",
+      "platform": "sentinel-apex",
+      "purpose": "product-release",
+      "repository": "cyberdudebivash-pvt-ltd/CYBERDUDEBIVASH-THREAT-INTEL-PLATFORM",
+      "trust_level": 5,
+      "enabled": true
+    },
+    {
+      "id": "intel-factory-github-releases",
+      "type": "github-releases",
+      "platform": "intel-factory",
+      "purpose": "product-release",
+      "repository": "cyberdudebivash-pvt-ltd/cyberdudebivash-blog",
+      "trust_level": 5,
+      "enabled": true
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+name: Campaign Intelligence Signal
+about: Submit an evidence-backed ecosystem signal for PR/marketing evaluation
+body:
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Ecosystem platform
+      options:
+        - Official Portal
+        - AI Security Hub
+        - Sentinel APEX
+        - CTI Platform
+        - Intelligence Factory
+        - Sentinel APEX Academy
+        - TrustX
+        - Tools Store
+        - Cross-ecosystem
+    validations:
+      required: true
+  - type: input
+    id: evidence
+    attributes:
+      label: Canonical evidence URL
+      description: Use a production page, release, report, repository record, or other approved first-party source.
+      placeholder: https://...
+    validations:
+      required: true
+  - type: input
+    id: signal_date
+    attributes:
+      label: Signal / publication date
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+  - type: textarea
+    id: signal
+    attributes:
+      label: What changed or why this matters now?
+      description: State only evidence-backed facts. Separate source claims from your analysis.
+    validations:
+      required: true
+  - type: textarea
+    id: audience
+    attributes:
+      label: Target audience and business relevance
+      description: Identify the audience, problem, and likely ecosystem value.
+    validations:
+      required: true
+  - type: checkboxes
+    id: gates
+    attributes:
+      label: Submission gates
+      options:
+        - label: The evidence URL is current and accessible to reviewers.
+          required: true
+        - label: I have not included credentials, payment identifiers, private customer data, or exploit-sensitive material.
+          required: true
+        - label: I have not asserted unverified customers, partnerships, certifications, revenue, legal status, or market-leadership claims.
+          required: true
+        - label: This submission requests evaluation only; it is not approval for external publication.
+          required: true
