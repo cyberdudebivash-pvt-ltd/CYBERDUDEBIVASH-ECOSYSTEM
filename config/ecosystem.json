@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "brand": "CYBERDUDEBIVASH®",
+  "canonical_home": "https://www.cyberdudebivash.com/",
+  "platforms": [
+    {
+      "id": "official-portal",
+      "name": "CYBERDUDEBIVASH® Official Portal",
+      "url": "https://www.cyberdudebivash.com/",
+      "category": "corporate",
+      "audiences": ["enterprise", "partners", "customers", "media"],
+      "positioning": "Corporate and ecosystem gateway for CYBERDUDEBIVASH®."
+    },
+    {
+      "id": "ai-security-hub",
+      "name": "CYBERDUDEBIVASH® AI Security Hub",
+      "url": "https://cyberdudebivash.in/",
+      "category": "ai-security",
+      "audiences": ["CISO", "security-leaders", "AI-governance", "enterprise"],
+      "positioning": "AI-native security, governance and enterprise defense."
+    },
+    {
+      "id": "sentinel-apex",
+      "name": "CYBERDUDEBIVASH® Sentinel APEX",
+      "url": "https://intel.cyberdudebivash.com/",
+      "category": "threat-intelligence",
+      "audiences": ["SOC", "CTI", "IR", "security-leaders"],
+      "positioning": "Operational threat intelligence and security intelligence."
+    },
+    {
+      "id": "cti-platform",
+      "name": "CYBERDUDEBIVASH® CTI Platform",
+      "url": "https://cti.cyberdudebivash.in/",
+      "category": "threat-intelligence",
+      "audiences": ["CTI", "SOC", "threat-hunters"],
+      "positioning": "Cyber threat intelligence discovery and analysis experience."
+    },
+    {
+      "id": "intel-factory",
+      "name": "CYBERDUDEBIVASH® Intelligence Factory",
+      "url": "https://blog.cyberdudebivash.in/",
+      "category": "research",
+      "audiences": ["security-practitioners", "media", "researchers", "enterprise"],
+      "positioning": "Security intelligence publications, research and analysis."
+    },
+    {
+      "id": "academy",
+      "name": "CYBERDUDEBIVASH® Sentinel APEX Academy",
+      "url": "https://academy.cyberdudebivash.com/",
+      "category": "education",
+      "audiences": ["professionals", "students", "enterprise-learning"],
+      "positioning": "Cybersecurity and AI security education built around practitioner workflows."
+    },
+    {
+      "id": "trustx",
+      "name": "CYBERDUDEBIVASH® TrustX",
+      "url": "https://trustx.cyberdudebivash.com/",
+      "category": "trust-governance",
+      "audiences": ["privacy", "compliance", "GRC", "enterprise"],
+      "positioning": "Trust, privacy, governance and compliance capabilities."
+    },
+    {
+      "id": "tools-store",
+      "name": "CYBERDUDEBIVASH® Tools Store",
+      "url": "https://tools.cyberdudebivash.com/",
+      "category": "commercial-tools",
+      "audiences": ["security-practitioners", "consultants", "enterprise"],
+      "positioning": "Commercial security tools and professional practitioner toolkits."
+    }
+  ]
+}

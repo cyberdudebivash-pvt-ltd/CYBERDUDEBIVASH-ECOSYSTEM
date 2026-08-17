@@ -1,0 +1,28 @@
+name: Platform / Product Update
+about: Register a product, feature, launch or positioning change
+body:
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: What changed?
+      description: State the production change and why it matters.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Production evidence
+      description: Add canonical links, release/PR references or screenshots.
+    validations:
+      required: true
+  - type: textarea
+    id: marketing
+    attributes:
+      label: PR / marketing opportunity
+      description: Audience, story, CTA and expected impact.

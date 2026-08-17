@@ -1,0 +1,59 @@
+name: Weekly Global Campaign Engine
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Platform ID or all
+        required: true
+        default: all
+        type: string
+      objective:
+        description: Campaign objective
+        required: true
+        default: authority
+        type: choice
+        options: [authority, demand, adoption, launch, education, trust]
+  schedule:
+    - cron: '30 2 * * 1'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: weekly-global-campaign
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolve campaign parameters
+        id: params
+        shell: bash
+        run: |
+          PLATFORM='${{ inputs.platform }}'
+          OBJECTIVE='${{ inputs.objective }}'
+          [ -n "$PLATFORM" ] || PLATFORM='all'
+          [ -n "$OBJECTIVE" ] || OBJECTIVE='authority'
+          echo "platform=$PLATFORM" >> "$GITHUB_OUTPUT"
+          echo "objective=$OBJECTIVE" >> "$GITHUB_OUTPUT"
+      - name: Generate campaign brief
+        run: python scripts/generate_campaign.py --platform '${{ steps.params.outputs.platform }}' --objective '${{ steps.params.outputs.objective }}' --output reports/campaign-brief.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: global-campaign-brief
+          path: reports/campaign-brief.md
+          retention-days: 30
+      - name: Create campaign operations issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Global Campaign: ${{ steps.params.outputs.objective }} / ${{ steps.params.outputs.platform }} / $(date -u +%F)"
+          gh issue create --title "$TITLE" --body-file reports/campaign-brief.md

@@ -1,0 +1,41 @@
+name: Global Campaign
+about: Plan and govern a CYBERDUDEBIVASH® campaign
+body:
+  - type: input
+    id: objective
+    attributes:
+      label: Business objective
+      placeholder: authority, demand, adoption, launch, education, trust
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform / ecosystem scope
+      placeholder: all or canonical platform ID
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and source-of-truth links
+      description: Add production pages, release notes, reports, demos or approved facts.
+    validations:
+      required: true
+  - type: textarea
+    id: audience
+    attributes:
+      label: Target audience and problem
+    validations:
+      required: true
+  - type: checkboxes
+    id: gates
+    attributes:
+      label: Publication gates
+      options:
+        - label: Factual claims are evidence-backed.
+          required: true
+        - label: No secret, customer-private or exploit-sensitive material is included.
+          required: true
+        - label: Canonical brand names and URLs are verified.
+          required: true

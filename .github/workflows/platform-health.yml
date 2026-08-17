@@ -1,0 +1,48 @@
+name: Ecosystem Platform Health
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 1,13 * * *'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ecosystem-platform-health
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run platform audit
+        id: audit
+        continue-on-error: true
+        run: python scripts/health_audit.py --output reports/platform-health.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ecosystem-platform-health
+          path: reports/platform-health.md
+          retention-days: 14
+      - name: Open degradation issue
+        if: steps.audit.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh issue list --state open --search 'Ecosystem platform degradation in:title' --json number --jq 'length' | grep -q '^0$'; then
+            echo 'Existing degradation issue already open.'
+            exit 0
+          fi
+          gh issue create \
+            --title 'P1: Ecosystem platform degradation detected' \
+            --body-file reports/platform-health.md
+      - name: Fail workflow when degraded
+        if: steps.audit.outcome == 'failure'
+        run: exit 1

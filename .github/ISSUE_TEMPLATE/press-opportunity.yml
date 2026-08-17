@@ -1,0 +1,32 @@
+name: PR / Media Opportunity
+about: Evaluate a press, analyst, event, partner or earned-media opportunity
+body:
+  - type: input
+    id: opportunity
+    attributes:
+      label: Opportunity
+    validations:
+      required: true
+  - type: input
+    id: deadline
+    attributes:
+      label: Deadline / timing
+  - type: textarea
+    id: relevance
+    attributes:
+      label: Why this matters to CYBERDUDEBIVASH®
+    validations:
+      required: true
+  - type: textarea
+    id: proof
+    attributes:
+      label: Evidence / approved proof points
+    validations:
+      required: true
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk class
+      options: [Class A - routine, Class B - elevated, Class C - critical]
+    validations:
+      required: true

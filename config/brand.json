@@ -1,0 +1,25 @@
+{
+  "brand_name": "CYBERDUDEBIVASH®",
+  "home_url": "https://www.cyberdudebivash.com/",
+  "core_pillars": ["AI Security", "Threat Intelligence", "Enterprise Defense"],
+  "voice": ["authoritative", "evidence-led", "technical", "commercial", "global", "precise"],
+  "prohibited_patterns": [
+    "unverifiable superlatives",
+    "fabricated customers",
+    "fabricated certifications",
+    "fabricated partnerships",
+    "fabricated analyst rankings",
+    "fear-only marketing",
+    "unsupported breach attribution",
+    "publication of secrets or customer data"
+  ],
+  "required_checks": [
+    "canonical URL",
+    "claim evidence",
+    "brand spelling",
+    "security review",
+    "audience fit",
+    "CTA",
+    "measurement tag"
+  ]
+}
