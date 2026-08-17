@@ -334,7 +334,7 @@ def _objective_candidates(
     return candidates, excluded
 
 
-def plan_campaign(
+def build_campaign_plan(
     ecosystem: dict[str, Any],
     policy: dict[str, Any],
     raw_history: Any,
@@ -548,7 +548,7 @@ def main() -> None:
     policy = load_json("config/editorial-policy.json")
     history = _load_history(args.history)
     try:
-        plan = plan_campaign(
+        plan = build_campaign_plan(
             ecosystem,
             policy,
             history,
