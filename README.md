@@ -61,6 +61,23 @@ The agent follows a strict **evidence → message → channel → measurement �
 
 **Direct social posting is intentionally not enabled by default.** Publishing to external networks requires explicit API integrations, scoped credentials, rate-limit handling, approval policy and channel-specific compliance.
 
+## Campaign Intelligence Engine v2
+
+The repository now includes a controlled intelligence-to-campaign pipeline that monitors approved first-party intelligence feeds and public GitHub release sources, normalizes heterogeneous signals, scores PR/marketing opportunities, deduplicates them with deterministic fingerprints, and opens only high-confidence GitHub issues for analyst review.
+
+**Production controls:**
+
+- explicit source trust and hostname allowlists;
+- bounded HTTP timeouts and response sizes;
+- six-dimensional 0–5 opportunity scoring;
+- evidence, freshness and total-score hard gates;
+- maximum five new campaign-intelligence issues per run;
+- cross-run deduplication through SHA-256 signal fingerprints;
+- all-source-failure workflow protection;
+- no direct external publication.
+
+See [`docs/CAMPAIGN-INTELLIGENCE.md`](docs/CAMPAIGN-INTELLIGENCE.md).
+
 ## Public-Claim Safety
 
 Payment identifiers, credentials, PAN data, tax/compliance identifiers, customer-private data, and unverified market-leadership claims do not belong in the public marketing registry. Legal/compliance assertions and superlatives must pass evidence review before being promoted globally.
@@ -70,8 +87,10 @@ Payment identifiers, credentials, PAN data, tax/compliance identifiers, customer
 ```bash
 python scripts/validate_registry.py
 python scripts/validate_public_directory.py
+python scripts/validate_intelligence_config.py
 python scripts/health_audit.py --output reports/platform-health.md
 python scripts/generate_campaign.py --platform all --objective authority --output reports/campaign-brief.md
+python scripts/intelligence_engine.py --output-json reports/opportunities.json --output-markdown reports/campaign-intelligence.md
 python -m unittest discover -s tests -v
 ```
 
@@ -79,9 +98,10 @@ python -m unittest discover -s tests -v
 
 - **Platform Health:** scheduled ecosystem availability audit with a GitHub issue on degradation.
 - **Weekly Campaign Engine:** generates a campaign brief and opens a structured campaign issue.
+- **Campaign Intelligence Engine v2:** twice-daily trusted-source collection, scoring, deduplication and analyst-review opportunity creation.
 - **Repository Quality:** validates the platform registry, public directory and campaign engine on every pull request.
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), [`docs/MEASUREMENT.md`](docs/MEASUREMENT.md), and [`docs/PUBLIC-DIRECTORY.md`](docs/PUBLIC-DIRECTORY.md).
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), [`docs/MEASUREMENT.md`](docs/MEASUREMENT.md), [`docs/PUBLIC-DIRECTORY.md`](docs/PUBLIC-DIRECTORY.md), and [`docs/CAMPAIGN-INTELLIGENCE.md`](docs/CAMPAIGN-INTELLIGENCE.md).
 
 ## Brand authority
 
