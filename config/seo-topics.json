@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "topics": [
+    {
+      "schema_version": 1,
+      "topic_id": "ai-security-assessment",
+      "cluster": "AI Security",
+      "query": "ai security assessment",
+      "intent": "commercial",
+      "target_platform": "ai-security-hub",
+      "landing_path": "/",
+      "source_platforms": ["official-portal", "trustx"],
+      "internal_signals": {"strategic_fit": 5, "commercial_intent": 5, "authority_fit": 5, "landing_readiness": 5, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "ai-red-teaming",
+      "cluster": "AI Security",
+      "query": "ai red teaming",
+      "intent": "commercial",
+      "target_platform": "ai-security-hub",
+      "landing_path": "/",
+      "source_platforms": ["official-portal", "academy"],
+      "internal_signals": {"strategic_fit": 5, "commercial_intent": 5, "authority_fit": 5, "landing_readiness": 4, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "ai-governance",
+      "cluster": "AI Security",
+      "query": "ai governance security",
+      "intent": "commercial",
+      "target_platform": "ai-security-hub",
+      "landing_path": "/",
+      "source_platforms": ["trustx", "official-portal"],
+      "internal_signals": {"strategic_fit": 5, "commercial_intent": 4, "authority_fit": 5, "landing_readiness": 5, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "agentic-ai-security",
+      "cluster": "AI Security",
+      "query": "agentic ai security",
+      "intent": "informational",
+      "target_platform": "ai-security-hub",
+      "landing_path": "/",
+      "source_platforms": ["intel-factory", "academy"],
+      "internal_signals": {"strategic_fit": 5, "commercial_intent": 4, "authority_fit": 4, "landing_readiness": 3, "content_gap": 5},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "threat-intelligence-platform",
+      "cluster": "Threat Intelligence",
+      "query": "threat intelligence platform",
+      "intent": "commercial",
+      "target_platform": "sentinel-apex",
+      "landing_path": "/",
+      "source_platforms": ["cti-platform", "intel-factory"],
+      "internal_signals": {"strategic_fit": 5, "commercial_intent": 5, "authority_fit": 5, "landing_readiness": 5, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "cyber-threat-intelligence",
+      "cluster": "Threat Intelligence",
+      "query": "cyber threat intelligence",
+      "intent": "informational",
+      "target_platform": "cti-platform",
+      "landing_path": "/",
+      "source_platforms": ["sentinel-apex", "intel-factory"],
+      "internal_signals": {"strategic_fit": 5, "commercial_intent": 4, "authority_fit": 5, "landing_readiness": 5, "content_gap": 3},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "ransomware-intelligence",
+      "cluster": "Threat Intelligence",
+      "query": "ransomware threat intelligence",
+      "intent": "commercial",
+      "target_platform": "sentinel-apex",
+      "landing_path": "/",
+      "source_platforms": ["intel-factory", "cti-platform"],
+      "internal_signals": {"strategic_fit": 5, "commercial_intent": 5, "authority_fit": 5, "landing_readiness": 4, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "threat-intelligence-training",
+      "cluster": "Academy",
+      "query": "threat intelligence training",
+      "intent": "commercial",
+      "target_platform": "academy",
+      "landing_path": "/",
+      "source_platforms": ["sentinel-apex", "cti-platform"],
+      "internal_signals": {"strategic_fit": 4, "commercial_intent": 5, "authority_fit": 5, "landing_readiness": 5, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "ai-security-training",
+      "cluster": "Academy",
+      "query": "ai security training",
+      "intent": "commercial",
+      "target_platform": "academy",
+      "landing_path": "/",
+      "source_platforms": ["ai-security-hub", "official-portal"],
+      "internal_signals": {"strategic_fit": 5, "commercial_intent": 5, "authority_fit": 5, "landing_readiness": 5, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "dpdp-compliance-security",
+      "cluster": "Trust & Governance",
+      "query": "dpdp compliance cybersecurity",
+      "intent": "commercial",
+      "target_platform": "trustx",
+      "landing_path": "/",
+      "source_platforms": ["official-portal", "ai-security-hub"],
+      "internal_signals": {"strategic_fit": 5, "commercial_intent": 5, "authority_fit": 4, "landing_readiness": 4, "content_gap": 5},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "privacy-governance",
+      "cluster": "Trust & Governance",
+      "query": "privacy governance platform",
+      "intent": "commercial",
+      "target_platform": "trustx",
+      "landing_path": "/",
+      "source_platforms": ["official-portal", "ai-security-hub"],
+      "internal_signals": {"strategic_fit": 4, "commercial_intent": 5, "authority_fit": 4, "landing_readiness": 4, "content_gap": 5},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "penetration-testing-toolkit",
+      "cluster": "Security Tools",
+      "query": "penetration testing reporting toolkit",
+      "intent": "transactional",
+      "target_platform": "tools-store",
+      "landing_path": "/",
+      "source_platforms": ["official-portal", "academy"],
+      "internal_signals": {"strategic_fit": 4, "commercial_intent": 5, "authority_fit": 4, "landing_readiness": 5, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "cloud-security-toolkit",
+      "cluster": "Security Tools",
+      "query": "cloud security assessment toolkit",
+      "intent": "transactional",
+      "target_platform": "tools-store",
+      "landing_path": "/",
+      "source_platforms": ["official-portal", "academy"],
+      "internal_signals": {"strategic_fit": 4, "commercial_intent": 5, "authority_fit": 4, "landing_readiness": 5, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    },
+    {
+      "schema_version": 1,
+      "topic_id": "soc-incident-response-toolkit",
+      "cluster": "Security Tools",
+      "query": "soc incident response toolkit",
+      "intent": "transactional",
+      "target_platform": "tools-store",
+      "landing_path": "/",
+      "source_platforms": ["sentinel-apex", "academy"],
+      "internal_signals": {"strategic_fit": 4, "commercial_intent": 5, "authority_fit": 4, "landing_readiness": 5, "content_gap": 4},
+      "external_evidence": {"status": "none"}
+    }
+  ]
+}

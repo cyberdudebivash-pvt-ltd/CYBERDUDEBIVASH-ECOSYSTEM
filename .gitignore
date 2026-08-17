@@ -5,5 +5,7 @@ __pycache__/
 .env.*
 !.env.example
 reports/*.tmp
+private/
+reports/private-analytics-*
 .DS_Store
 Thumbs.db
