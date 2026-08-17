@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.cyberdudebivash.com/schemas/campaign-performance.schema.json",
+  "title": "CYBERDUDEBIVASH Campaign Performance Aggregate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "campaign_id",
+    "window_start",
+    "window_end",
+    "channel",
+    "platform",
+    "metrics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "campaign_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"
+    },
+    "window_start": {
+      "type": "string",
+      "format": "date"
+    },
+    "window_end": {
+      "type": "string",
+      "format": "date"
+    },
+    "channel": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"
+    },
+    "platform": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "impressions",
+        "clicks",
+        "engaged_visits",
+        "cta_actions",
+        "leads",
+        "conversions"
+      ],
+      "properties": {
+        "impressions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "clicks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "engaged_visits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cta_actions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "leads": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "conversions": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

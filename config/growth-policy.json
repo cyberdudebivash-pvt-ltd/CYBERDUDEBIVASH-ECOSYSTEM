@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "campaign_id_prefix": "cdb",
+  "allowed_states": [
+    "planned",
+    "approved",
+    "active",
+    "measuring",
+    "completed",
+    "rejected",
+    "archived"
+  ],
+  "state_transitions": {
+    "planned": [
+      "approved",
+      "rejected"
+    ],
+    "approved": [
+      "active",
+      "rejected"
+    ],
+    "active": [
+      "measuring",
+      "completed"
+    ],
+    "measuring": [
+      "completed"
+    ],
+    "completed": [
+      "archived"
+    ],
+    "rejected": [
+      "archived"
+    ],
+    "archived": []
+  },
+  "utm": {
+    "required_parameters": [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign"
+    ],
+    "optional_parameters": [
+      "utm_content",
+      "utm_term"
+    ],
+    "max_value_chars": 120
+  },
+  "performance": {
+    "required_metrics": [
+      "impressions",
+      "clicks",
+      "engaged_visits",
+      "cta_actions",
+      "leads",
+      "conversions"
+    ],
+    "minimum_clicks_for_channel_recommendation": 25,
+    "targets_pct": {
+      "ctr": 2.0,
+      "engaged_visit_rate": 60.0,
+      "cta_rate": 5.0,
+      "lead_rate": 1.0,
+      "conversion_rate": 0.5
+    },
+    "score_weights": {
+      "ctr": 0.2,
+      "engaged_visit_rate": 0.2,
+      "cta_rate": 0.25,
+      "lead_rate": 0.2,
+      "conversion_rate": 0.15
+    }
+  },
+  "privacy": {
+    "aggregate_only": true,
+    "forbidden_fields": [
+      "email",
+      "phone",
+      "mobile",
+      "whatsapp",
+      "full_name",
+      "first_name",
+      "last_name",
+      "ip",
+      "ip_address",
+      "user_id",
+      "device_id",
+      "cookie",
+      "session_id",
+      "password",
+      "pan",
+      "gstin",
+      "address",
+      "card_number"
+    ],
+    "forbidden_key_substrings": [
+      "token",
+      "secret",
+      "authorization",
+      "credential"
+    ]
+  }
+}

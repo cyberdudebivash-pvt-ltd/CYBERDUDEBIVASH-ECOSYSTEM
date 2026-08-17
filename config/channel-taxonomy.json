@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "channels": [
+    {
+      "id": "linkedin",
+      "utm_source": "linkedin",
+      "utm_medium": "social",
+      "enabled": true
+    },
+    {
+      "id": "x",
+      "utm_source": "x",
+      "utm_medium": "social",
+      "enabled": true
+    },
+    {
+      "id": "youtube",
+      "utm_source": "youtube",
+      "utm_medium": "video",
+      "enabled": true
+    },
+    {
+      "id": "instagram",
+      "utm_source": "instagram",
+      "utm_medium": "social",
+      "enabled": true
+    },
+    {
+      "id": "facebook",
+      "utm_source": "facebook",
+      "utm_medium": "social",
+      "enabled": true
+    },
+    {
+      "id": "blog",
+      "utm_source": "cyberdudebivash-blog",
+      "utm_medium": "content",
+      "enabled": true
+    },
+    {
+      "id": "github",
+      "utm_source": "github",
+      "utm_medium": "community",
+      "enabled": true
+    },
+    {
+      "id": "owned-crosslink",
+      "utm_source": "cyberdudebivash",
+      "utm_medium": "owned",
+      "enabled": true
+    },
+    {
+      "id": "email",
+      "utm_source": "cyberdudebivash",
+      "utm_medium": "email",
+      "enabled": false
+    }
+  ]
+}

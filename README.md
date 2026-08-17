@@ -2,9 +2,9 @@
 
 ![CYBERDUDEBIVASH® Ecosystem](assets/brand/cyberdudebivash-ecosystem-banner.png)
 
-**Official global command center for the CYBERDUDEBIVASH® ecosystem — platform registry, public relations, digital marketing, campaign operations, launch coordination, ecosystem health, and growth intelligence.**
+**Official global command center for the CYBERDUDEBIVASH® ecosystem — platform registry, public relations, digital marketing, campaign intelligence, attribution, launch coordination, ecosystem health, and growth operations.**
 
-> **Mission:** increase qualified global visibility, trust, adoption, and commercial opportunity across the complete CYBERDUDEBIVASH® ecosystem without compromising security, accuracy, brand integrity, or customer trust.
+> **Mission:** increase qualified global visibility, trust, adoption, and commercial opportunity across the complete CYBERDUDEBIVASH® ecosystem without compromising security, accuracy, privacy, brand integrity, or customer trust.
 
 ## Ecosystem
 
@@ -40,7 +40,10 @@ This repository operates as the ecosystem's **PR & Digital Marketing Agent contr
 - a governed public directory for platforms, APIs, channels and public repositories;
 - brand and messaging governance;
 - automated platform-health intelligence;
+- evidence-gated campaign-intelligence discovery;
+- deterministic campaign IDs and governed UTM tracking;
 - repeatable global campaign generation;
+- privacy-safe aggregate attribution and growth scorecards;
 - launch, product, research, academy and threat-intelligence promotion playbooks;
 - PR opportunity and campaign issue workflows;
 - measurable growth and distribution governance;
@@ -49,21 +52,22 @@ This repository operates as the ecosystem's **PR & Digital Marketing Agent contr
 
 ## Agent operating model
 
-The agent follows a strict **evidence → message → channel → measurement → learning** loop:
+The agent follows a strict **evidence → message → campaign identity → channel → measurement → learning** loop:
 
 1. **Observe** — platform status, launches, new reports, releases, publications and strategic priorities.
 2. **Prioritize** — select the highest-value story by relevance, authority, commercial impact and timeliness.
 3. **Package** — generate an audience-specific campaign brief with canonical claims and URLs.
-4. **Review** — enforce brand, factual, security, legal and reputational gates.
-5. **Distribute** — prepare channel-ready content and publishing instructions.
-6. **Measure** — track reach, qualified traffic, conversions, leads, citations and platform adoption.
-7. **Improve** — convert results into the next campaign hypothesis and backlog.
+4. **Identify** — create a deterministic campaign ID and governed channel-specific tracking URLs.
+5. **Review** — enforce brand, factual, security, legal, privacy and reputational gates.
+6. **Distribute** — prepare channel-ready content and publishing instructions.
+7. **Measure** — calculate aggregate funnel outcomes where trustworthy telemetry exists.
+8. **Improve** — convert evidence-backed results into the next campaign hypothesis and backlog.
 
 **Direct social posting is intentionally not enabled by default.** Publishing to external networks requires explicit API integrations, scoped credentials, rate-limit handling, approval policy and channel-specific compliance.
 
 ## Campaign Intelligence Engine v2
 
-The repository now includes a controlled intelligence-to-campaign pipeline that monitors approved first-party intelligence feeds and public GitHub release sources, normalizes heterogeneous signals, scores PR/marketing opportunities, deduplicates them with deterministic fingerprints, and opens only high-confidence GitHub issues for analyst review.
+The repository includes a controlled intelligence-to-campaign pipeline that monitors approved first-party intelligence feeds and public GitHub release sources, normalizes heterogeneous signals, scores PR/marketing opportunities, deduplicates them with deterministic fingerprints, and opens only high-confidence GitHub issues for analyst review.
 
 **Production controls:**
 
@@ -78,9 +82,31 @@ The repository now includes a controlled intelligence-to-campaign pipeline that 
 
 See [`docs/CAMPAIGN-INTELLIGENCE.md`](docs/CAMPAIGN-INTELLIGENCE.md).
 
-## Public-Claim Safety
+## Global Growth Intelligence & Attribution
 
-Payment identifiers, credentials, PAN data, tax/compliance identifiers, customer-private data, and unverified market-leadership claims do not belong in the public marketing registry. Legal/compliance assertions and superlatives must pass evidence review before being promoted globally.
+The Growth Attribution Engine turns approved campaigns into measurable, auditable campaign units without turning this public repository into a person-level analytics store.
+
+**Production controls:**
+
+- deterministic campaign IDs;
+- canonical ecosystem destination enforcement;
+- per-channel UTM generation from a governed taxonomy;
+- fail-closed campaign lifecycle transitions;
+- aggregate-only performance schema;
+- explicit sensitive-field rejection;
+- funnel KPI calculation;
+- policy-controlled 0–100 target-attainment index;
+- minimum-sample channel recommendations;
+- public-safe zero-state behavior when no approved telemetry exists;
+- no causal claims from attribution alone.
+
+See [`docs/GROWTH-ATTRIBUTION.md`](docs/GROWTH-ATTRIBUTION.md).
+
+## Public-Claim and Data Safety
+
+Payment identifiers, credentials, PAN data, tax/compliance identifiers, customer-private data, person-level analytics, confidential performance exports, and unverified market-leadership claims do not belong in the public marketing registry.
+
+Legal/compliance assertions and superlatives must pass evidence review before global promotion. Performance data committed under `data/performance/` must be aggregate and explicitly approved for public disclosure.
 
 ## Quick start
 
@@ -88,20 +114,33 @@ Payment identifiers, credentials, PAN data, tax/compliance identifiers, customer
 python scripts/validate_registry.py
 python scripts/validate_public_directory.py
 python scripts/validate_intelligence_config.py
+python scripts/validate_growth_config.py
 python scripts/health_audit.py --output reports/platform-health.md
-python scripts/generate_campaign.py --platform all --objective authority --output reports/campaign-brief.md
+python scripts/generate_campaign.py --platform all --objective authority --output reports/campaign-brief.md --tracking-output reports/campaign-tracking.json
 python scripts/intelligence_engine.py --output-json reports/opportunities.json --output-markdown reports/campaign-intelligence.md
 python -m unittest discover -s tests -v
+```
+
+Generate a private/local attribution scorecard from aggregate records:
+
+```bash
+python scripts/growth_attribution.py scorecard \
+  --input /secure/path/performance.jsonl \
+  --campaign-id <campaign-id> \
+  --output-json reports/growth-scorecard.json \
+  --output-markdown reports/growth-scorecard.md
 ```
 
 ## Automation
 
 - **Platform Health:** scheduled ecosystem availability audit with a GitHub issue on degradation.
-- **Weekly Campaign Engine:** generates a campaign brief and opens a structured campaign issue.
+- **Weekly Campaign Engine:** generates an idempotent campaign brief, deterministic campaign ID and governed tracking bundle.
 - **Campaign Intelligence Engine v2:** twice-daily trusted-source collection, scoring, deduplication and analyst-review opportunity creation.
-- **Repository Quality:** validates the platform registry, public directory and campaign engine on every pull request.
+- **Growth Attribution Scorecard:** validates explicitly public-approved aggregate telemetry and generates a bounded scorecard; safe-zero-state when no public telemetry exists.
+- **Repository Quality:** validates platform, public-directory, intelligence and growth contracts plus unit tests on every pull request.
+- **CodeQL:** independent code-scanning gate.
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), [`docs/MEASUREMENT.md`](docs/MEASUREMENT.md), [`docs/PUBLIC-DIRECTORY.md`](docs/PUBLIC-DIRECTORY.md), and [`docs/CAMPAIGN-INTELLIGENCE.md`](docs/CAMPAIGN-INTELLIGENCE.md).
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), [`docs/MEASUREMENT.md`](docs/MEASUREMENT.md), [`docs/PUBLIC-DIRECTORY.md`](docs/PUBLIC-DIRECTORY.md), [`docs/CAMPAIGN-INTELLIGENCE.md`](docs/CAMPAIGN-INTELLIGENCE.md), and [`docs/GROWTH-ATTRIBUTION.md`](docs/GROWTH-ATTRIBUTION.md).
 
 ## Brand authority
 
