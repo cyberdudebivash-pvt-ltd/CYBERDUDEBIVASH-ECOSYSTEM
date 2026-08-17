@@ -78,7 +78,15 @@ jobs:
             fingerprint="$(jq -r '.fingerprint' <<<"$opportunity")"
             title="$(jq -r '.issue_title' <<<"$opportunity")"
 
-            existing="$(
+            recent_existing="$(
+              gh issue list \
+                --state all \
+                --limit 200 \
+                --json body \
+                --jq "[.[] | select(.body != null and (.body | contains(\"signal-id:${fingerprint}\")))] | length"
+            )"
+
+            indexed_existing="$(
               gh issue list \
                 --state all \
                 --search "$fingerprint" \
@@ -86,7 +94,7 @@ jobs:
                 --jq 'length'
             )"
 
-            if [ "$existing" != "0" ]; then
+            if [ "$recent_existing" != "0" ] || [ "$indexed_existing" != "0" ]; then
               echo "Skipping existing signal $fingerprint"
               continue
             fi
