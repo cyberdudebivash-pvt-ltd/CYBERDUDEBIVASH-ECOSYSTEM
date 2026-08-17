@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CYBERDUDEBIVASH Private Aggregate Analytics",
+  "type": "object",
+  "oneOf": [
+    {
+      "properties": {
+        "schema_version": {"const": 1},
+        "data_classification": {"const": "private-aggregate"},
+        "provider": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"},
+        "record_type": {"const": "funnel"},
+        "property_host": {"type": "string", "minLength": 3, "maxLength": 253},
+        "platform": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"},
+        "window_start": {"type": "string", "format": "date"},
+        "window_end": {"type": "string", "format": "date"},
+        "campaign_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"},
+        "channel": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"},
+        "landing_path": {"type": "string", "pattern": "^/[^?#]*$", "maxLength": 200},
+        "metrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sessions", "engaged_sessions", "cta_events", "leads", "conversions"],
+          "properties": {
+            "sessions": {"type": "integer", "minimum": 0},
+            "engaged_sessions": {"type": "integer", "minimum": 0},
+            "cta_events": {"type": "integer", "minimum": 0},
+            "leads": {"type": "integer", "minimum": 0},
+            "conversions": {"type": "integer", "minimum": 0}
+          }
+        }
+      },
+      "required": ["schema_version", "data_classification", "provider", "record_type", "property_host", "platform", "window_start", "window_end", "campaign_id", "channel", "landing_path", "metrics"],
+      "additionalProperties": false
+    },
+    {
+      "properties": {
+        "schema_version": {"const": 1},
+        "data_classification": {"const": "private-aggregate"},
+        "provider": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"},
+        "record_type": {"const": "assist"},
+        "window_start": {"type": "string", "format": "date"},
+        "window_end": {"type": "string", "format": "date"},
+        "campaign_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"},
+        "from_platform": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"},
+        "to_platform": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,119}$"},
+        "metrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["journeys", "assisted_conversions"],
+          "properties": {
+            "journeys": {"type": "integer", "minimum": 0},
+            "assisted_conversions": {"type": "integer", "minimum": 0}
+          }
+        }
+      },
+      "required": ["schema_version", "data_classification", "provider", "record_type", "window_start", "window_end", "campaign_id", "from_platform", "to_platform", "metrics"],
+      "additionalProperties": false
+    }
+  ]
+}

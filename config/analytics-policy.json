@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "runtime_boundary": "private-only",
+  "public_repository_runtime_inputs_forbidden": true,
+  "retention_days": 90,
+  "max_batch_records": 5000,
+  "providers": [
+    {
+      "id": "manual-aggregate",
+      "enabled": true,
+      "mode": "file"
+    },
+    {
+      "id": "cloudflare-web-analytics",
+      "enabled": false,
+      "mode": "api"
+    },
+    {
+      "id": "ga4-data-api",
+      "enabled": false,
+      "mode": "api"
+    }
+  ],
+  "record_types": {
+    "funnel": {
+      "required_metrics": [
+        "sessions",
+        "engaged_sessions",
+        "cta_events",
+        "leads",
+        "conversions"
+      ]
+    },
+    "assist": {
+      "required_metrics": [
+        "journeys",
+        "assisted_conversions"
+      ]
+    }
+  },
+  "allowed_acquisition_channels": [
+    "linkedin",
+    "x",
+    "youtube",
+    "instagram",
+    "facebook",
+    "blog",
+    "github",
+    "owned-crosslink",
+    "email",
+    "organic-search",
+    "direct",
+    "referral",
+    "other"
+  ],
+  "privacy": {
+    "aggregate_only": true,
+    "forbidden_fields": [
+      "email",
+      "phone",
+      "mobile",
+      "whatsapp",
+      "full_name",
+      "first_name",
+      "last_name",
+      "ip",
+      "ip_address",
+      "user_id",
+      "device_id",
+      "cookie",
+      "session_id",
+      "password",
+      "pan",
+      "gstin",
+      "address",
+      "card_number",
+      "visitor_id",
+      "client_id"
+    ],
+    "forbidden_key_substrings": [
+      "token",
+      "secret",
+      "authorization",
+      "credential",
+      "fingerprint",
+      "user_agent"
+    ],
+    "max_landing_path_chars": 200
+  }
+}

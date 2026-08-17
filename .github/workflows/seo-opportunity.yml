@@ -1,0 +1,40 @@
+name: SEO Opportunity Intelligence
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '40 4 * * 3'
+  push:
+    branches: [main]
+    paths:
+      - 'config/seo-policy.json'
+      - 'config/seo-topics.json'
+      - 'config/ecosystem.json'
+      - 'scripts/seo_opportunity.py'
+      - 'scripts/validate_seo_config.py'
+      - 'schemas/seo-opportunity.schema.json'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/validate_seo_config.py
+      - run: |
+          python scripts/seo_opportunity.py \
+            --output-json reports/seo-opportunities.json \
+            --output-markdown reports/seo-opportunities.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: seo-opportunity-intelligence
+          path: |
+            reports/seo-opportunities.json
+            reports/seo-opportunities.md
+          retention-days: 14

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "score_version": "seo-opportunity-v1",
+  "allowed_intents": [
+    "informational",
+    "commercial",
+    "transactional",
+    "navigational"
+  ],
+  "allowed_external_evidence_status": [
+    "none",
+    "verified"
+  ],
+  "approved_external_providers": [
+    "google-search-console",
+    "bing-webmaster-tools",
+    "approved-seo-provider"
+  ],
+  "internal_weights": {
+    "strategic_fit": 0.25,
+    "commercial_intent": 0.2,
+    "authority_fit": 0.2,
+    "landing_readiness": 0.15,
+    "content_gap": 0.2
+  },
+  "external_weights": {
+    "demand_score": 0.6,
+    "competition_opportunity": 0.4
+  },
+  "blend": {
+    "internal": 0.75,
+    "external": 0.25
+  },
+  "confidence_multiplier": {
+    "internal-only": 0.85,
+    "verified-external": 1.0
+  },
+  "recommendation_threshold": 65.0,
+  "max_report_items": 20,
+  "rules": {
+    "numeric_signals_min": 0,
+    "numeric_signals_max": 5,
+    "ranking_claims_require_verified_external_evidence": true,
+    "search_volume_claims_forbidden_without_source": true
+  }
+}

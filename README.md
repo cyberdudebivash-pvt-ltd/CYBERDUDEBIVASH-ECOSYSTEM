@@ -2,7 +2,7 @@
 
 ![CYBERDUDEBIVASH® Ecosystem](assets/brand/cyberdudebivash-ecosystem-banner.png)
 
-**Official global command center for the CYBERDUDEBIVASH® ecosystem — platform registry, public relations, digital marketing, campaign intelligence, attribution, launch coordination, ecosystem health, and growth operations.**
+**Official global command center for the CYBERDUDEBIVASH® ecosystem — platform registry, public relations, digital marketing, campaign intelligence, attribution, SEO opportunity intelligence, launch coordination, ecosystem health, and growth operations.**
 
 > **Mission:** increase qualified global visibility, trust, adoption, and commercial opportunity across the complete CYBERDUDEBIVASH® ecosystem without compromising security, accuracy, privacy, brand integrity, or customer trust.
 
@@ -21,92 +21,93 @@
 
 ## Global Public Directory
 
-The ecosystem maintains a governed public directory for campaign generation, PR, customer discovery, media references, APIs, social channels and public repositories:
-
-- **Human-readable directory:** [`docs/PUBLIC-DIRECTORY.md`](docs/PUBLIC-DIRECTORY.md)
-- **Machine-readable directory:** [`config/public-directory.json`](config/public-directory.json)
-- **Public directory validation:** `python scripts/validate_public_directory.py`
+- **Human-readable:** [`docs/PUBLIC-DIRECTORY.md`](docs/PUBLIC-DIRECTORY.md)
+- **Machine-readable:** [`config/public-directory.json`](config/public-directory.json)
+- **Validator:** `python scripts/validate_public_directory.py`
 
 **Official contact:** `contact@cyberdudebivash.in` · `bivash@cyberdudebivash.com` · `+91 8179881447`  
 **Location:** Odisha, India · **Service scope:** Global
 
-Public campaign capability tags: **AI Security · Threat Intelligence · SOC · MSSP · Cloud Security · Zero Trust · Enterprise Cyber Defense**.
+## Control-plane capabilities
 
-## What this repository does
+This repository provides:
 
-This repository operates as the ecosystem's **PR & Digital Marketing Agent control plane**. It provides:
-
-- a canonical, machine-readable platform registry;
-- a governed public directory for platforms, APIs, channels and public repositories;
-- brand and messaging governance;
-- automated platform-health intelligence;
+- canonical platform and public-directory governance;
+- platform-health intelligence;
 - evidence-gated campaign-intelligence discovery;
 - deterministic campaign IDs and governed UTM tracking;
 - repeatable global campaign generation;
-- privacy-safe aggregate attribution and growth scorecards;
-- launch, product, research, academy and threat-intelligence promotion playbooks;
-- PR opportunity and campaign issue workflows;
-- measurable growth and distribution governance;
-- reusable briefs for LinkedIn, X, YouTube, blogs, newsletters, partner outreach and executive communications;
-- security and factual-accuracy quality gates before publication.
+- privacy-safe public aggregate attribution;
+- a **private-only first-party analytics runtime** for aggregate owned-property measurement;
+- aggregate cross-platform assist modeling without person-level identifiers;
+- evidence-aware SEO opportunity prioritization;
+- governed ecosystem internal-link recommendations;
+- launch/product/research/academy/threat-intelligence playbooks;
+- security, privacy and factual-accuracy quality gates.
 
-## Agent operating model
+## Operating model
 
-The agent follows a strict **evidence → message → campaign identity → channel → measurement → learning** loop:
+`observe -> prioritize -> package -> identify -> review -> distribute -> measure -> learn -> optimize`
 
-1. **Observe** — platform status, launches, new reports, releases, publications and strategic priorities.
-2. **Prioritize** — select the highest-value story by relevance, authority, commercial impact and timeliness.
-3. **Package** — generate an audience-specific campaign brief with canonical claims and URLs.
-4. **Identify** — create a deterministic campaign ID and governed channel-specific tracking URLs.
-5. **Review** — enforce brand, factual, security, legal, privacy and reputational gates.
-6. **Distribute** — prepare channel-ready content and publishing instructions.
-7. **Measure** — calculate aggregate funnel outcomes where trustworthy telemetry exists.
-8. **Improve** — convert evidence-backed results into the next campaign hypothesis and backlog.
+Direct social publishing remains disabled by default. External publication requires explicit integration, scoped credentials, approval policy, retry/rate-limit controls and channel compliance.
 
-**Direct social posting is intentionally not enabled by default.** Publishing to external networks requires explicit API integrations, scoped credentials, rate-limit handling, approval policy and channel-specific compliance.
+## Campaign Intelligence Engine
 
-## Campaign Intelligence Engine v2
-
-The repository includes a controlled intelligence-to-campaign pipeline that monitors approved first-party intelligence feeds and public GitHub release sources, normalizes heterogeneous signals, scores PR/marketing opportunities, deduplicates them with deterministic fingerprints, and opens only high-confidence GitHub issues for analyst review.
-
-**Production controls:**
-
-- explicit source trust and hostname allowlists;
-- bounded HTTP timeouts and response sizes;
-- six-dimensional 0–5 opportunity scoring;
-- evidence, freshness and total-score hard gates;
-- maximum five new campaign-intelligence issues per run;
-- cross-run deduplication through SHA-256 signal fingerprints;
-- all-source-failure workflow protection;
-- no direct external publication.
+The Campaign Intelligence Engine monitors approved first-party intelligence and public release sources, normalizes signals, applies evidence/freshness gates, deduplicates opportunities and creates bounded analyst-review work.
 
 See [`docs/CAMPAIGN-INTELLIGENCE.md`](docs/CAMPAIGN-INTELLIGENCE.md).
 
 ## Global Growth Intelligence & Attribution
 
-The Growth Attribution Engine turns approved campaigns into measurable, auditable campaign units without turning this public repository into a person-level analytics store.
-
-**Production controls:**
+Phase 2B provides:
 
 - deterministic campaign IDs;
-- canonical ecosystem destination enforcement;
-- per-channel UTM generation from a governed taxonomy;
-- fail-closed campaign lifecycle transitions;
-- aggregate-only performance schema;
-- explicit sensitive-field rejection;
-- funnel KPI calculation;
-- policy-controlled 0–100 target-attainment index;
-- minimum-sample channel recommendations;
-- public-safe zero-state behavior when no approved telemetry exists;
-- no causal claims from attribution alone.
+- canonical destination enforcement;
+- governed UTM generation;
+- campaign lifecycle controls;
+- aggregate public-performance schema;
+- funnel KPI and performance-index calculation;
+- evidence-bounded channel recommendations;
+- a safe zero-state when no approved telemetry exists.
 
 See [`docs/GROWTH-ATTRIBUTION.md`](docs/GROWTH-ATTRIBUTION.md).
 
-## Public-Claim and Data Safety
+## Private First-Party Analytics
 
-Payment identifiers, credentials, PAN data, tax/compliance identifiers, customer-private data, person-level analytics, confidential performance exports, and unverified market-leadership claims do not belong in the public marketing registry.
+Phase 2C adds an intentionally separate private runtime.
 
-Legal/compliance assertions and superlatives must pass evidence review before global promotion. Performance data committed under `data/performance/` must be aggregate and explicitly approved for public disclosure.
+**Hard boundary:**
+
+- private analytics inputs are never committed;
+- repo-local private inputs/outputs must remain under ignored `private/`;
+- public GitHub Actions never process private analytics runtime data;
+- person-level identifiers and credential-like fields are rejected;
+- canonical owned-property hosts must match their ecosystem platform IDs;
+- cross-platform assistance is represented only as aggregate edges;
+- API providers remain disabled until an isolated private runner exists.
+
+See [`docs/PRIVATE-ANALYTICS.md`](docs/PRIVATE-ANALYTICS.md).
+
+## SEO Opportunity Intelligence
+
+The SEO engine prioritizes governed topic hypotheses using internal strategy signals and optional verified external evidence.
+
+It does **not** invent:
+
+- keyword volume;
+- ranking position;
+- keyword difficulty;
+- market demand.
+
+Internal-only topics are clearly labeled as editorial planning hypotheses. Ranking/demand claims require verified external evidence from an approved provider.
+
+See [`docs/SEO-OPPORTUNITY.md`](docs/SEO-OPPORTUNITY.md).
+
+## Public-claim and data safety
+
+Credentials, payment identifiers, PAN/tax identifiers, customer-private data, person-level analytics, raw analytics exports, confidential funnel data and unsupported market-leadership claims do not belong in this public repository.
+
+Private analytics stay private. Public performance disclosure requires a separate explicit review.
 
 ## Quick start
 
@@ -115,32 +116,44 @@ python scripts/validate_registry.py
 python scripts/validate_public_directory.py
 python scripts/validate_intelligence_config.py
 python scripts/validate_growth_config.py
+python scripts/validate_analytics_config.py
+python scripts/validate_seo_config.py
 python scripts/health_audit.py --output reports/platform-health.md
 python scripts/generate_campaign.py --platform all --objective authority --output reports/campaign-brief.md --tracking-output reports/campaign-tracking.json
 python scripts/intelligence_engine.py --output-json reports/opportunities.json --output-markdown reports/campaign-intelligence.md
+python scripts/seo_opportunity.py --output-json reports/seo-opportunities.json --output-markdown reports/seo-opportunities.md
 python -m unittest discover -s tests -v
 ```
 
-Generate a private/local attribution scorecard from aggregate records:
+Private analytics validation:
 
 ```bash
-python scripts/growth_attribution.py scorecard \
-  --input /secure/path/performance.jsonl \
-  --campaign-id <campaign-id> \
-  --output-json reports/growth-scorecard.json \
-  --output-markdown reports/growth-scorecard.md
+python scripts/private_analytics.py validate \
+  --input private/analytics/weekly.jsonl
+```
+
+Private analytics scorecard:
+
+```bash
+python scripts/private_analytics.py scorecard \
+  --input private/analytics/weekly.jsonl \
+  --output-json private/reports/private-analytics-scorecard.json \
+  --output-markdown private/reports/private-analytics-scorecard.md
 ```
 
 ## Automation
 
-- **Platform Health:** scheduled ecosystem availability audit with a GitHub issue on degradation.
-- **Weekly Campaign Engine:** generates an idempotent campaign brief, deterministic campaign ID and governed tracking bundle.
-- **Campaign Intelligence Engine v2:** twice-daily trusted-source collection, scoring, deduplication and analyst-review opportunity creation.
-- **Growth Attribution Scorecard:** validates explicitly public-approved aggregate telemetry and generates a bounded scorecard; safe-zero-state when no public telemetry exists.
-- **Repository Quality:** validates platform, public-directory, intelligence and growth contracts plus unit tests on every pull request.
-- **CodeQL:** independent code-scanning gate.
+- **Ecosystem Platform Health** — scheduled availability audit.
+- **Campaign Intelligence Engine** — trusted-source opportunity discovery.
+- **Weekly Global Campaign Engine** — campaign brief + deterministic tracking bundle.
+- **Growth Attribution Scorecard** — public-approved aggregate attribution only.
+- **SEO Opportunity Intelligence** — public-safe strategic SEO prioritization.
+- **Repository Quality** — validates registry, intelligence, growth, analytics and SEO contracts plus unit tests.
+- **CodeQL** — independent code-scanning gate.
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), [`docs/MEASUREMENT.md`](docs/MEASUREMENT.md), [`docs/PUBLIC-DIRECTORY.md`](docs/PUBLIC-DIRECTORY.md), [`docs/CAMPAIGN-INTELLIGENCE.md`](docs/CAMPAIGN-INTELLIGENCE.md), and [`docs/GROWTH-ATTRIBUTION.md`](docs/GROWTH-ATTRIBUTION.md).
+Private analytics processing intentionally has **no public GitHub Actions runtime**.
+
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/GOVERNANCE.md`](docs/GOVERNANCE.md), [`docs/MEASUREMENT.md`](docs/MEASUREMENT.md), [`docs/ROADMAP.md`](docs/ROADMAP.md), [`docs/PRIVATE-ANALYTICS.md`](docs/PRIVATE-ANALYTICS.md), and [`docs/SEO-OPPORTUNITY.md`](docs/SEO-OPPORTUNITY.md).
 
 ## Brand authority
 
@@ -150,4 +163,4 @@ https://www.cyberdudebivash.com/
 
 ---
 
-Copyright © CYBERDUDEBIVASH®. All rights reserved. Brand names, marks, content and commercial assets remain subject to their respective ownership and usage terms.
+Copyright © CYBERDUDEBIVASH®. All rights reserved.
