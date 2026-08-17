@@ -1,0 +1,25 @@
+name: Release Governance
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  protection-drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate checked-in governance contract
+        run: python scripts/release_governance.py validate
+      - name: Verify production main ruleset is active
+        run: python scripts/release_governance.py verify-live
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
