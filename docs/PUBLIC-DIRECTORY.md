@@ -45,7 +45,6 @@ This document is the human-readable companion to [`config/public-directory.json`
 - LinkedIn: https://www.linkedin.com/company/cyberdudebivash/
 - Instagram: https://www.instagram.com/cyberdudebivash_official/
 - X: https://x.com/cyberbivash
-- Facebook: https://www.facebook.com/profile.php?id=61592427350011
 - Fiverr: https://www.fiverr.com/sellers/bivashkumar007/
 
 ## Publications
