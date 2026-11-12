@@ -82,6 +82,11 @@ def validate() -> list[str]:
             parsed = urlparse(url)
             if parsed.scheme != "https" or not parsed.netloc:
                 errors.append(f"invalid HTTPS URL in {section_name}: {url}")
+            # P0: do not publish unverified owner-associated Facebook or ORCID
+            # profiles as first-party identity. Preserve historical VDP evidence.
+            hostname = (parsed.hostname or "").lower().removeprefix("www.")
+            if hostname in {"facebook.com", "orcid.org"}:
+                errors.append(f"unverified external social identity is prohibited in {section_name}")
             if url in seen_urls:
                 errors.append(f"duplicate URL in {section_name}: {url}")
             seen_urls.add(url)
